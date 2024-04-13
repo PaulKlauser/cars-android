@@ -1,6 +1,7 @@
 package com.paulklauser.cars
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.paulklauser.cars.makes.CarService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,4 +34,9 @@ object ApiModule {
             .baseUrl("https://carapi.app/")
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
+
+    @Provides
+    fun makesService(retrofit: Retrofit): CarService {
+        return retrofit.create(CarService::class.java)
+    }
 }

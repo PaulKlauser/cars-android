@@ -9,7 +9,7 @@ import org.junit.Test
 
 class MakesRepositoryTest {
 
-    private val makesService = FakeMakesService()
+    private val makesService = FakeCarService()
 
     private fun createRepository(): MakesRepository {
         return MakesRepository(makesService)
