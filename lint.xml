@@ -1,0 +1,7 @@
+<lint>
+    <issue id="ComposeModifierMissing" severity="ignore" />
+    <issue id="ComposeViewModelInjection" severity="ignore" />
+    <issue id="GradleDependency" severity="warning" />
+    <issue id="AndroidGradlePluginVersion" severity="warning" />
+    <issue id="ObsoleteLintCustomCheck" severity="warning" />
+</lint>

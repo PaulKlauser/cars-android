@@ -97,6 +97,7 @@ dependencies {
     lintChecks(libs.compose.lint.checks)
     implementation(libs.detekt)
     detektPlugins(libs.detekt.formatting)
+    implementation(libs.kotlinx.immutable.collections)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.timber)
