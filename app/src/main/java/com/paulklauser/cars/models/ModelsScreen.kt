@@ -3,6 +3,7 @@ package com.paulklauser.cars.models
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -14,6 +15,9 @@ import kotlinx.collections.immutable.persistentListOf
 fun ModelsRoute() {
     val vm = hiltViewModel<ModelsViewModel>()
     val uiState by vm.uiState.collectAsState()
+    LaunchedEffect(Unit) {
+        vm.fetchModels()
+    }
     ModelsScreen(uiState)
 }
 
