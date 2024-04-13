@@ -11,6 +11,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.paulklauser.cars.commonapi.Year
 import com.paulklauser.cars.ui.theme.CarsTheme
 import kotlinx.collections.immutable.persistentListOf
 
@@ -23,18 +24,28 @@ fun MakesScreenRoute(onMakeSelected: (String) -> Unit) {
     }
     MakesScreen(
         uiState = uiState,
-        onMakeSelected = onMakeSelected
+        onMakeSelected = onMakeSelected,
+        onYearSelected = vm::onYearSelected
     )
 }
 
 @Composable
 fun MakesScreen(
     uiState: MakesUiState,
-    onMakeSelected: (String) -> Unit
+    onMakeSelected: (String) -> Unit,
+    onYearSelected: (Year) -> Unit
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(text = "Choose a make") })
+            TopAppBar(
+                title = { Text(text = "Choose a make") },
+                actions = {
+                    YearSelection(
+                        selectedYear = uiState.selectedYear,
+                        onYearSelected = onYearSelected
+                    )
+                }
+            )
         }
     ) { paddingValues ->
         LazyColumn(contentPadding = paddingValues) {
@@ -55,9 +66,11 @@ private fun MakesScreenPreview() {
                     Make(id = "1", "Toyota"),
                     Make(id = "2", "Ford"),
                     Make(id = "3", "Chevrolet")
-                )
+                ),
+                selectedYear = Year.TWENTY_FIFTEEN
             ),
-            onMakeSelected = {}
+            onMakeSelected = {},
+            onYearSelected = {}
         )
     }
 }
