@@ -2,6 +2,9 @@ package com.paulklauser.cars.makes
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -11,19 +14,29 @@ import com.paulklauser.cars.ui.theme.CarsTheme
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-fun MakesScreenRoute() {
+fun MakesScreenRoute(onMakeSelected: (String) -> Unit) {
     val vm = hiltViewModel<MakesViewModel>()
     val uiState by vm.uiState.collectAsState()
-    MakesScreen(uiState = uiState)
+    MakesScreen(
+        uiState = uiState,
+        onMakeSelected = onMakeSelected
+    )
 }
 
 @Composable
 fun MakesScreen(
-    uiState: MakesUiState
+    uiState: MakesUiState,
+    onMakeSelected: (String) -> Unit
 ) {
-    LazyColumn {
-        items(uiState.makes) { make ->
-            MakeRow(make = make)
+    Scaffold(
+        topBar = {
+            TopAppBar(title = { Text(text = "Choose a make") })
+        }
+    ) { paddingValues ->
+        LazyColumn(contentPadding = paddingValues) {
+            items(uiState.makes) { make ->
+                MakeRow(make = make, onClick = onMakeSelected)
+            }
         }
     }
 }
@@ -35,11 +48,12 @@ private fun MakesScreenPreview() {
         MakesScreen(
             uiState = MakesUiState(
                 makes = persistentListOf(
-                    Make("Toyota"),
-                    Make("Ford"),
-                    Make("Chevrolet")
+                    Make(id = "1", "Toyota"),
+                    Make(id = "2", "Ford"),
+                    Make(id = "3", "Chevrolet")
                 )
-            )
+            ),
+            onMakeSelected = {}
         )
     }
 }

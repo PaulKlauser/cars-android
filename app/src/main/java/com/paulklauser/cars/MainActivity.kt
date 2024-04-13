@@ -1,6 +1,7 @@
 package com.paulklauser.cars
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.Surface
@@ -23,7 +24,15 @@ class MainActivity : ComponentActivity() {
                         navController = navController,
                         startDestination = MAKES_ROUTE
                     ) {
-                        makes()
+                        makes(
+                            onMakeSelected = { makeId ->
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    "Make selected: $makeId",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        )
                     }
                 }
             }

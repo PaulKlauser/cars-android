@@ -5,8 +5,12 @@ import androidx.navigation.compose.composable
 
 const val MAKES_ROUTE = "makes"
 
-fun NavGraphBuilder.makes() {
+fun NavGraphBuilder.makes(
+    onMakeSelected: (String) -> Unit
+) {
     composable(MAKES_ROUTE) {
-        MakesScreenRoute()
+        MakesScreenRoute(
+            onMakeSelected = onMakeSelected
+        )
     }
 }
