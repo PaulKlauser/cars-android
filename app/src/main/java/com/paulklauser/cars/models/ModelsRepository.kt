@@ -9,7 +9,8 @@ class ModelsRepository @Inject constructor(
 ) {
     suspend fun getModels(makeId: String): ApiResponse<List<Model>> {
         return ApiResponse.handleApiResponse {
-            carService.getModels(makeId).data.map { Model.fromApiModel(it) }
+            // TODO: Allow user to choose year
+            carService.getModels(makeId, "2015").data.map { Model.fromApiModel(it) }
         }
     }
 }

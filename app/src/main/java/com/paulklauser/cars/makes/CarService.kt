@@ -9,5 +9,5 @@ interface CarService {
     suspend fun getMakes(): MakesResponse
 
     @GET("api/models")
-    suspend fun getModels(@Query("make_id") makeId: String): ModelsResponse
+    suspend fun getModels(@Query("make_id") makeId: String, @Query("year") year: String): ModelsResponse
 }
