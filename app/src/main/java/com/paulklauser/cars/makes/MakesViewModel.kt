@@ -7,11 +7,10 @@ import com.paulklauser.cars.commonapi.Year
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,11 +19,10 @@ class MakesViewModel @Inject constructor(
     private val makeAndModelRepository: MakeAndModelRepository
 ) : ViewModel() {
 
-    private val vmState = MutableStateFlow(MakesViewModelState(selectedYear = Year.TWENTY_FIFTEEN))
-    val uiState = combine(vmState, makeAndModelRepository.state) { vmState, repoState ->
+    val uiState = makeAndModelRepository.state.map { repoState ->
         MakesUiState(
             makes = repoState.makesToModels.keys.toPersistentList(),
-            selectedYear = vmState.selectedYear
+            selectedYear = repoState.selectedYear
         )
     }.stateIn(
         viewModelScope,
@@ -35,13 +33,19 @@ class MakesViewModel @Inject constructor(
         )
     )
 
+    private var fetchJob: Job? = null
+
     fun fetchMakes() {
-        viewModelScope.launch {
+        fetchJob?.cancel()
+        fetchJob = viewModelScope.launch {
             makeAndModelRepository.fetchCarInfoIfNeeded()
         }
     }
 
     fun onYearSelected(year: Year) {
-        vmState.update { it.copy(selectedYear = year) }
+        fetchJob?.cancel()
+        fetchJob = viewModelScope.launch {
+            makeAndModelRepository.selectYear(year)
+        }
     }
 }

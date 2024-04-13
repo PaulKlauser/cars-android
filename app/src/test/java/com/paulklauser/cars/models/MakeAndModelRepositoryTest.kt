@@ -5,6 +5,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.paulklauser.cars.MakeAndModelRepository
 import com.paulklauser.cars.MakeAndModelRepositoryState
+import com.paulklauser.cars.commonapi.Year
 import com.paulklauser.cars.makes.FakeCarService
 import com.paulklauser.cars.makes.Make
 import com.paulklauser.cars.makes.MakesResponse
@@ -67,7 +68,8 @@ class MakeAndModelRepositoryTest {
                         Make(id = "2", name = "Volvo") to listOf(
                             Model(id = "4", name = "XC60", makeId = "2")
                         )
-                    )
+                    ),
+                    selectedYear = Year.TWENTY_FIFTEEN
                 )
             )
         }
@@ -109,7 +111,8 @@ class MakeAndModelRepositoryTest {
                         Make(id = "1", name = "BMW") to listOf(
                             Model(id = "1", name = "M3", makeId = "1")
                         )
-                    )
+                    ),
+                    selectedYear = Year.TWENTY_FIFTEEN
                 )
             )
         }
