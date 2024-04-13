@@ -21,19 +21,27 @@ import com.paulklauser.cars.ui.theme.CarsTheme
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-fun ModelsRoute(onNavigateBack: () -> Unit) {
+fun ModelsRoute(
+    onNavigateBack: () -> Unit,
+    onModelSelected: (String) -> Unit
+) {
     val vm = hiltViewModel<ModelsViewModel>()
     val uiState by vm.uiState.collectAsState()
     LaunchedEffect(Unit) {
         vm.fetchIfNeeded()
     }
-    ModelsScreen(uiState = uiState, onNavigateBack = onNavigateBack)
+    ModelsScreen(
+        uiState = uiState,
+        onNavigateBack = onNavigateBack,
+        onModelSelected = onModelSelected
+    )
 }
 
 @Composable
 fun ModelsScreen(
     uiState: ModelsUiState,
-    onNavigateBack: () -> Unit
+    onNavigateBack: () -> Unit,
+    onModelSelected: (String) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -54,9 +62,7 @@ fun ModelsScreen(
             items(uiState.models) { model ->
                 ModelRow(
                     model = model,
-                    onClick = {
-                        // TODO: PK
-                    }
+                    onClick = onModelSelected
                 )
             }
         }
@@ -76,7 +82,8 @@ private fun ModelsScreenPreview() {
                 ),
                 make = "BMW"
             ),
-            onNavigateBack = { }
+            onNavigateBack = { },
+            onModelSelected = { }
         )
     }
 }

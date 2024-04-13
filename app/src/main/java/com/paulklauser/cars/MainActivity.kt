@@ -8,6 +8,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.paulklauser.cars.makes.MAKES_ROUTE
 import com.paulklauser.cars.makes.makes
+import com.paulklauser.cars.modeldetail.MODEL_DETAIL_ROUTE_PATTERN
+import com.paulklauser.cars.modeldetail.modelDetail
 import com.paulklauser.cars.models.MODELS_ROUTE_PATTERN
 import com.paulklauser.cars.models.models
 import com.paulklauser.cars.ui.theme.CarsTheme
@@ -30,7 +32,13 @@ class MainActivity : ComponentActivity() {
                                 navController.navigate("$MODELS_ROUTE_PATTERN/$makeId")
                             }
                         )
-                        models(onNavigateBack = { navController.popBackStack() })
+                        models(
+                            onNavigateBack = { navController.popBackStack() },
+                            onModelSelected = { modelId ->
+                                navController.navigate("$MODEL_DETAIL_ROUTE_PATTERN/$modelId")
+                            }
+                        )
+                        modelDetail()
                     }
                 }
             }
