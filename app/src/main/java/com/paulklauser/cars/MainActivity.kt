@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
                                 navController.navigate("$MODELS_ROUTE_PATTERN/$makeId")
                             }
                         )
-                        models()
+                        models(onNavigateBack = { navController.popBackStack() })
                     }
                 }
             }

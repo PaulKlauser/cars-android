@@ -62,7 +62,8 @@ class ModelsViewModelTest {
                     models = persistentListOf(
                         Model(id = "1", name = "F-150", makeId = "1"),
                         Model(id = "2", name = "Mustang", makeId = "1")
-                    )
+                    ),
+                    make = "Ford"
                 )
             )
         }

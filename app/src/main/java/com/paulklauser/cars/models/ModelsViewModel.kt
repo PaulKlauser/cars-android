@@ -22,16 +22,23 @@ class ModelsViewModel @Inject constructor(
     private val makeId: String =
         savedStateHandle[MAKE_ID_PATTERN] ?: throw IllegalArgumentException("Make ID not provided!")
     val uiState = makeAndModelRepository.state.map { makeAndModelState ->
-        val models = requireNotNull(
-            makeAndModelState.makesToModels.keys.find { it.id == makeId }?.let {
-                makeAndModelState.makesToModels[it]
-            }
-        ) { "Make ID not found in map of makes to models!" }
-        ModelsUiState(models = models.toPersistentList())
+        val make = requireNotNull(makeAndModelState.makesToModels.keys.find { it.id == makeId }) {
+            "Make ID not found in map of makes to models!"
+        }
+        val models = requireNotNull(makeAndModelState.makesToModels[make]) {
+            "Make ID not found in map of makes to models!"
+        }
+        ModelsUiState(
+            models = models.toPersistentList(),
+            make = make.name
+        )
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
-        ModelsUiState(persistentListOf())
+        ModelsUiState(
+            models = persistentListOf(),
+            make = ""
+        )
     )
 
     fun fetchIfNeeded() {

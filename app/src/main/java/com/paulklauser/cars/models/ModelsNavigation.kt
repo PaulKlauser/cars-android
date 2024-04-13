@@ -6,8 +6,8 @@ import androidx.navigation.compose.composable
 const val MODELS_ROUTE_PATTERN = "models"
 const val MAKE_ID_PATTERN = "makeId"
 
-fun NavGraphBuilder.models() {
+fun NavGraphBuilder.models(onNavigateBack: () -> Unit) {
     composable("$MODELS_ROUTE_PATTERN/{$MAKE_ID_PATTERN}") {
-        ModelsRoute()
+        ModelsRoute(onNavigateBack = onNavigateBack)
     }
 }
