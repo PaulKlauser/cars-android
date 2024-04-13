@@ -21,14 +21,7 @@ class ModelsViewModel @Inject constructor(
 
     private val makeId: String =
         savedStateHandle[MAKE_ID_PATTERN] ?: throw IllegalArgumentException("Make ID not provided!")
-    private val _uiState = MutableStateFlow(
-        ModelsUiState(
-            persistentListOf(
-                Model("1", "Model 1"),
-                Model("2", "Model 2"),
-            )
-        )
-    )
+    private val _uiState = MutableStateFlow(ModelsUiState(models = persistentListOf()))
     val uiState = _uiState.asStateFlow()
 
     fun fetchModels() {

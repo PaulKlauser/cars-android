@@ -25,7 +25,12 @@ fun ModelsRoute() {
 fun ModelsScreen(uiState: ModelsUiState) {
     LazyColumn {
         items(uiState.models) { model ->
-            ModelRow(model = model)
+            ModelRow(
+                model = model,
+                onClick = {
+                    // TODO: PK
+                }
+            )
         }
     }
 }
