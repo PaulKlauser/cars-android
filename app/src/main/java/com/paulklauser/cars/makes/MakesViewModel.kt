@@ -2,35 +2,31 @@ package com.paulklauser.cars.makes
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.paulklauser.cars.MakeAndModelRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MakesViewModel @Inject constructor(
-    private val makesRepository: MakesRepository
+    private val makeAndModelRepository: MakeAndModelRepository
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(
-        MakesUiState(makes = persistentListOf())
+    val uiState = makeAndModelRepository.state.map {
+        MakesUiState(makes = it.makesToModels.keys.toPersistentList())
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
+        MakesUiState(persistentListOf())
     )
-    val uiState = _uiState.asStateFlow()
 
     fun fetchMakes() {
         viewModelScope.launch {
-            when (val response = makesRepository.getMakes()) {
-                is ApiResponse.Success -> {
-                    _uiState.update { it.copy(makes = response.data.toPersistentList()) }
-                }
-
-                is ApiResponse.Error -> {
-                    // TODO: PK
-                }
-            }
+            makeAndModelRepository.fetchCarInfo()
         }
     }
 }

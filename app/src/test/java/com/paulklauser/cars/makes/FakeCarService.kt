@@ -17,37 +17,38 @@ class FakeCarService : CarService {
             MakesResponse.ApiMake(
                 id = 3,
                 name = "Toyota"
-            )
+            ),
         )
     )
-    var _modelsResponse = ModelsResponse(
-        data = listOf(
-            ModelsResponse.ApiModel(
-                id = 1,
-                name = "F-150"
-            ),
-            ModelsResponse.ApiModel(
-                id = 2,
-                name = "Mustang"
-            ),
-            ModelsResponse.ApiModel(
-                id = 3,
-                name = "Silverado"
-            ),
-            ModelsResponse.ApiModel(
-                id = 4,
-                name = "Camaro"
-            ),
-            ModelsResponse.ApiModel(
-                id = 5,
-                name = "Corolla"
-            ),
-            ModelsResponse.ApiModel(
-                id = 6,
-                name = "Camry"
+    var _modelMap = mapOf(
+        "1" to ModelsResponse(
+            listOf(
+                ModelsResponse.ApiModel(
+                    id = 1,
+                    name = "F-150",
+                    makeId = 1
+                ),
+                ModelsResponse.ApiModel(
+                    id = 2,
+                    name = "Mustang",
+                    makeId = 1
+                )
+            )
+        ),
+        "2" to ModelsResponse(
+            listOf(
+                ModelsResponse.ApiModel(
+                    id = 3,
+                    name = "Silverado",
+                    makeId = 2
+                ),
+                ModelsResponse.ApiModel(
+                    id = 4,
+                    name = "Camaro",
+                    makeId = 2
+                )
             )
         )
-
     )
 
     override suspend fun getMakes(): MakesResponse {
@@ -55,7 +56,7 @@ class FakeCarService : CarService {
     }
 
     override suspend fun getModels(makeId: String, year: String): ModelsResponse {
-        return _modelsResponse
+        return _modelMap[makeId] ?: ModelsResponse(emptyList())
     }
 
 }

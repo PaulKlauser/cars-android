@@ -42,9 +42,9 @@ private fun ModelsScreenPreview() {
         ModelsScreen(
             ModelsUiState(
                 models = persistentListOf(
-                    Model("1", "Model 1"),
-                    Model("2", "Model 2"),
-                    Model("3", "Model 3")
+                    Model(id = "1", name = "Model 1", makeId = "1"),
+                    Model(id = "2", name = "Model 2", makeId = "2"),
+                    Model(id = "3", name = "Model 3", makeId = "3")
                 )
             )
         )

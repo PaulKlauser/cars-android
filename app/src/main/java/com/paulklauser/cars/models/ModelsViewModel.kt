@@ -3,6 +3,7 @@ package com.paulklauser.cars.models
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.paulklauser.cars.MakeAndModelRepository
 import com.paulklauser.cars.makes.ApiResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
@@ -16,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ModelsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val modelsRepository: ModelsRepository
+    private val makeAndModelRepository: MakeAndModelRepository
 ) : ViewModel() {
 
     private val makeId: String =
@@ -26,7 +27,7 @@ class ModelsViewModel @Inject constructor(
 
     fun fetchModels() {
         viewModelScope.launch {
-            when (val response = modelsRepository.getModels(makeId)) {
+            when (val response = makeAndModelRepository.getModels(makeId)) {
                 is ApiResponse.Success -> {
                     _uiState.update { it.copy(models = response.data.toPersistentList()) }
                 }

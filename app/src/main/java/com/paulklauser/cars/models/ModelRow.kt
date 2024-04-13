@@ -32,6 +32,6 @@ fun ModelRow(
 @Composable
 private fun ModelRowPreview() {
     CarsTheme {
-        ModelRow(model = Model(id = "1", name = "Corolla"), onClick = {})
+        ModelRow(model = Model(id = "1", name = "Corolla", makeId = "1"), onClick = {})
     }
 }
