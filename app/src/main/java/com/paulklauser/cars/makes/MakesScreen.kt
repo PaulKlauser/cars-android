@@ -6,6 +6,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,6 +18,9 @@ import kotlinx.collections.immutable.persistentListOf
 fun MakesScreenRoute(onMakeSelected: (String) -> Unit) {
     val vm = hiltViewModel<MakesViewModel>()
     val uiState by vm.uiState.collectAsState()
+    LaunchedEffect(Unit) {
+        vm.fetchMakes()
+    }
     MakesScreen(
         uiState = uiState,
         onMakeSelected = onMakeSelected
