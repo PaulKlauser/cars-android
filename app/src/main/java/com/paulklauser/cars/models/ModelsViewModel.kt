@@ -3,7 +3,7 @@ package com.paulklauser.cars.models
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.paulklauser.cars.MakeAndModelRepository
+import com.paulklauser.cars.commonapi.MakeAndModelRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList

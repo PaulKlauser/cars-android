@@ -1,4 +1,4 @@
-package com.paulklauser.cars
+package com.paulklauser.cars.commonapi
 
 import com.paulklauser.cars.commonapi.Year
 import com.paulklauser.cars.makes.Make

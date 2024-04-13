@@ -1,6 +1,7 @@
-package com.paulklauser.cars
+package com.paulklauser.cars.commonapi
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.paulklauser.cars.BuildConfig
 import com.paulklauser.cars.makes.CarService
 import dagger.Module
 import dagger.Provides

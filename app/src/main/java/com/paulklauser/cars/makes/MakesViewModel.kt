@@ -2,7 +2,7 @@ package com.paulklauser.cars.makes
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.paulklauser.cars.MakeAndModelRepository
+import com.paulklauser.cars.commonapi.MakeAndModelRepository
 import com.paulklauser.cars.commonapi.Year
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
