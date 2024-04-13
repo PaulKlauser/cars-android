@@ -26,7 +26,7 @@ class MakesViewModel @Inject constructor(
 
     fun fetchMakes() {
         viewModelScope.launch {
-            makeAndModelRepository.fetchCarInfo()
+            makeAndModelRepository.fetchCarInfoIfNeeded()
         }
     }
 }

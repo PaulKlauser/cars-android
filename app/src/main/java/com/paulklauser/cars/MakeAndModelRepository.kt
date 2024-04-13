@@ -1,6 +1,5 @@
 package com.paulklauser.cars
 
-import com.paulklauser.cars.makes.ApiResponse
 import com.paulklauser.cars.makes.CarService
 import com.paulklauser.cars.makes.Make
 import com.paulklauser.cars.models.Model
@@ -23,7 +22,10 @@ class MakeAndModelRepository @Inject constructor(
     )
     val state = _state.asStateFlow()
 
-    suspend fun fetchCarInfo() {
+    suspend fun fetchCarInfoIfNeeded() {
+        if (state.value.makesToModels.isNotEmpty()) {
+            return
+        }
         val makes = carService.getMakes().data.map { Make.fromApi(it) }
         val makesToModels = coroutineScope {
             val foo = makes.map {
@@ -44,13 +46,5 @@ class MakeAndModelRepository @Inject constructor(
                 }
         }
         _state.update { it.copy(makesToModels = makesToModels) }
-
-    }
-
-    suspend fun getModels(makeId: String): ApiResponse<List<Model>> {
-        return ApiResponse.handleApiResponse {
-            // TODO: Allow user to choose year
-            carService.getModels(makeId, "2015").data.map { Model.fromApiModel(it) }
-        }
     }
 }

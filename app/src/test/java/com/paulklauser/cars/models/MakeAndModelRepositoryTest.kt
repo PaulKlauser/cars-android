@@ -55,7 +55,7 @@ class MakeAndModelRepositoryTest {
         )
 
         val repository = createRepository()
-        repository.fetchCarInfo()
+        repository.fetchCarInfoIfNeeded()
 
         repository.state.test {
             assertThat(awaitItem()).isEqualTo(
@@ -100,7 +100,7 @@ class MakeAndModelRepositoryTest {
         )
 
         val repository = createRepository()
-        repository.fetchCarInfo()
+        repository.fetchCarInfoIfNeeded()
 
         repository.state.test {
             assertThat(awaitItem()).isEqualTo(

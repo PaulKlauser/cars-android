@@ -16,7 +16,7 @@ fun ModelsRoute() {
     val vm = hiltViewModel<ModelsViewModel>()
     val uiState by vm.uiState.collectAsState()
     LaunchedEffect(Unit) {
-        vm.fetchModels()
+        vm.fetchIfNeeded()
     }
     ModelsScreen(uiState)
 }
