@@ -1,5 +1,6 @@
 package com.paulklauser.cars.trimdetail
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -72,9 +73,11 @@ fun TrimDetailScreen(
         }
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
-            when (uiState.loadingState) {
-                TrimDetailUiState.LoadingState.Loading -> Loading(modifier = Modifier.fillMaxSize())
-                is TrimDetailUiState.LoadingState.Success -> Loaded(uiState.loadingState.trimDetail)
+            AnimatedContent(targetState = uiState.loadingState) {
+                when (it) {
+                    TrimDetailUiState.LoadingState.Loading -> Loading(modifier = Modifier.fillMaxSize())
+                    is TrimDetailUiState.LoadingState.Success -> Loaded(it.trimDetail)
+                }
             }
         }
     }

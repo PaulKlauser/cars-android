@@ -123,9 +123,9 @@ class ModelsViewModelTest {
                                     )
                                 )
                             )
-                        ),
-                        make = "Ford"
-                    )
+                        )
+                    ),
+                    make = "Ford"
                 )
             )
         }

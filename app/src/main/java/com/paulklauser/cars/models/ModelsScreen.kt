@@ -1,9 +1,14 @@
 package com.paulklauser.cars.models
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -60,10 +65,15 @@ fun ModelsScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(
-                        text = (uiState.loadingState as?
-                                ModelsUiState.LoadingState.Success)?.make ?: ""
-                    )
+                    AnimatedContent(
+                        targetState = uiState.make,
+                        transitionSpec = { fadeIn().togetherWith(fadeOut()) }
+                    ) {
+                        Text(
+                            text = it,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
                 },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
@@ -80,15 +90,17 @@ fun ModelsScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
-            when (uiState.loadingState) {
-                ModelsUiState.LoadingState.Loading -> Loading(
-                    modifier = Modifier.fillMaxSize()
-                )
+            AnimatedContent(targetState = uiState.loadingState) {
+                when (it) {
+                    ModelsUiState.LoadingState.Loading -> Loading(
+                        modifier = Modifier.fillMaxSize()
+                    )
 
-                is ModelsUiState.LoadingState.Success -> Loaded(
-                    models = uiState.loadingState.models,
-                    onTrimSelected = onTrimSelected
-                )
+                    is ModelsUiState.LoadingState.Success -> Loaded(
+                        models = it.models,
+                        onTrimSelected = onTrimSelected
+                    )
+                }
             }
         }
     }
@@ -154,9 +166,9 @@ private fun ModelsScreenPreview() {
                                 )
                             )
                         )
-                    ),
-                    make = "BMW"
-                )
+                    )
+                ),
+                make = "BMW"
             ),
             onNavigateBack = { },
             onTrimSelected = { }

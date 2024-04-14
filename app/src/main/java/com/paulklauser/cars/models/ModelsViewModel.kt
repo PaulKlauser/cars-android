@@ -52,14 +52,14 @@ class ModelsViewModel @Inject constructor(
             }.toPersistentList()
         ModelsUiState(
             loadingState = ModelsUiState.LoadingState.Success(
-                models = modelItems,
-                make = make.name
-            )
+                models = modelItems
+            ),
+            make = make.name
         )
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
-        ModelsUiState(loadingState = ModelsUiState.LoadingState.Loading)
+        ModelsUiState(loadingState = ModelsUiState.LoadingState.Loading, make = "")
     )
 
     fun fetchIfNeeded() {
