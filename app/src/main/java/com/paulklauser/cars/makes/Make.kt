@@ -5,7 +5,7 @@ data class Make(
     val name: String
 ) {
     companion object {
-        fun fromApi(apiMake: MakesResponse.ApiMake): Make {
+        fun fromApi(apiMake: ApiMake): Make {
             return Make(
                 id = apiMake.id.toString(),
                 name = apiMake.name

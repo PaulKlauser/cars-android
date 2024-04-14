@@ -6,6 +6,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.paulklauser.cars.MainDispatcherRule
 import com.paulklauser.cars.commonapi.MakeAndModelRepository
+import com.paulklauser.cars.makes.ApiMake
 import com.paulklauser.cars.makes.FakeCarService
 import com.paulklauser.cars.makes.MakesResponse
 import kotlinx.collections.immutable.persistentListOf
@@ -32,7 +33,7 @@ class ModelsViewModelTest {
     fun `uiState contains models for make ID`() = runTest {
         carService._makesResponse = MakesResponse(
             data = listOf(
-                MakesResponse.ApiMake(
+                ApiMake(
                     id = 1,
                     name = "Ford"
                 ),

@@ -25,6 +25,8 @@ class TrimDetailViewModel @Inject constructor(
         TrimDetailUiState(
             trimDetail = TrimDetail(
                 year = "2022",
+                make = "Toyota",
+                model = "Corolla",
                 description = "This is a car",
                 msrp = "$100,000"
             )

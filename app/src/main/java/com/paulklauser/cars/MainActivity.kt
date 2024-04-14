@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
                                 navController.navigate("$TRIM_DETAIL_ROUTE_PATTERN/$trimId")
                             }
                         )
-                        trimDetail()
+                        trimDetail(onNavigateBack = { navController.popBackStack() })
                     }
                 }
             }

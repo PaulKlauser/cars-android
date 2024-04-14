@@ -9,15 +9,15 @@ class FakeCarService : CarService {
 
     var _makesResponse = MakesResponse(
         data = listOf(
-            MakesResponse.ApiMake(
+            ApiMake(
                 id = 1,
                 name = "Ford"
             ),
-            MakesResponse.ApiMake(
+            ApiMake(
                 id = 2,
                 name = "Chevrolet"
             ),
-            MakesResponse.ApiMake(
+            ApiMake(
                 id = 3,
                 name = "Toyota"
             ),
