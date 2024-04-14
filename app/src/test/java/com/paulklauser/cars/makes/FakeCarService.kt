@@ -5,6 +5,7 @@ import com.paulklauser.cars.models.ModelTrimResponse
 import com.paulklauser.cars.models.ModelsResponse
 import com.paulklauser.cars.trimdetail.TrimDetailResponse
 
+@Suppress("TooGenericExceptionThrown")
 class FakeCarService : CarService {
 
     var _makesResponse = MakesResponse(
@@ -71,19 +72,23 @@ class FakeCarService : CarService {
             )
         )
     )
-    var _shouldError = false
+    var _shouldErrorOnModels = false
+    var _shouldErrorOnTrims = false
+    var _shouldErrorOnTrimDetails = false
 
     override suspend fun getMakes(): MakesResponse {
         return _makesResponse
     }
 
     override suspend fun getModels(makeId: String, year: String): ModelsResponse {
+        if (_shouldErrorOnModels) {
+            throw Exception()
+        }
         return _modelMap[makeId] ?: ModelsResponse(emptyList())
     }
 
-    @Suppress("TooGenericExceptionThrown")
     override suspend fun getTrimDetails(trimId: String): TrimDetailResponse {
-        if (_shouldError) {
+        if (_shouldErrorOnTrimDetails) {
             throw Exception()
         }
         return TrimDetailResponse(
@@ -111,6 +116,9 @@ class FakeCarService : CarService {
     }
 
     override suspend fun getTrims(makeModelId: String, year: String): ModelTrimResponse {
+        if (_shouldErrorOnTrims) {
+            throw Exception()
+        }
         return _trimsMap[makeModelId] ?: ModelTrimResponse(emptyList())
     }
 

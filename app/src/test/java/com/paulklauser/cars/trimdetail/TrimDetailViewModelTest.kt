@@ -26,7 +26,7 @@ class TrimDetailViewModelTest {
 
     @Test
     fun `failure to fetch trim detail gives error state`() = runTest {
-        carService._shouldError = true
+        carService._shouldErrorOnTrimDetails = true
         val viewModel = createViewModel()
 
         viewModel.fetchTrimDetail()

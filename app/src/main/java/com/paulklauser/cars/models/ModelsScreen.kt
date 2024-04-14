@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.paulklauser.cars.Error
 import com.paulklauser.cars.Loading
 import com.paulklauser.cars.ui.theme.CarsTheme
 import kotlinx.collections.immutable.ImmutableList
@@ -50,7 +51,8 @@ fun ModelsRoute(
     ModelsScreen(
         uiState = uiState,
         onNavigateBack = onNavigateBack,
-        onTrimSelected = onTrimSelected
+        onTrimSelected = onTrimSelected,
+        onRetry = vm::fetchIfNeeded
     )
 }
 
@@ -58,7 +60,8 @@ fun ModelsRoute(
 fun ModelsScreen(
     uiState: ModelsUiState,
     onNavigateBack: () -> Unit,
-    onTrimSelected: (String) -> Unit
+    onTrimSelected: (String) -> Unit,
+    onRetry: () -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     Scaffold(
@@ -99,6 +102,11 @@ fun ModelsScreen(
                     is ModelsUiState.LoadingState.Success -> Loaded(
                         models = it.models,
                         onTrimSelected = onTrimSelected
+                    )
+
+                    ModelsUiState.LoadingState.Error -> Error(
+                        onRetry = onRetry,
+                        modifier = Modifier.fillMaxSize()
                     )
                 }
             }
@@ -171,7 +179,8 @@ private fun ModelsScreenPreview() {
                 make = "BMW"
             ),
             onNavigateBack = { },
-            onTrimSelected = { }
+            onTrimSelected = { },
+            onRetry = { }
         )
     }
 }

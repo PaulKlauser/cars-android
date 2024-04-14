@@ -8,6 +8,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,7 +19,7 @@ class MakeAndModelRepository @Inject constructor(
 
     private val _state = MutableStateFlow(
         MakeAndModelRepositoryState(
-            makesToModels = emptyMap(),
+            loadingState = MakeAndModelRepositoryState.LoadingState.Loading,
             selectedYear = Year.TWENTY_FIFTEEN
         )
     )
@@ -30,15 +31,32 @@ class MakeAndModelRepository @Inject constructor(
     }
 
     suspend fun fetchCarInfoIfNeeded() {
-        if (state.value.makesToModels.isNotEmpty()) {
+        if (state.value.loadingState is MakeAndModelRepositoryState.LoadingState.Success) {
             return
         }
-        fetchCarInfo()
+
+        _state.update {
+            it.copy(loadingState = MakeAndModelRepositoryState.LoadingState.Loading)
+        }
+        try {
+            _state.update {
+                it.copy(
+                    loadingState = MakeAndModelRepositoryState.LoadingState.Success(
+                        makesToModels = fetchCarInfo()
+                    )
+                )
+            }
+        } catch (e: Exception) {
+            Timber.e(e)
+            _state.update {
+                it.copy(loadingState = MakeAndModelRepositoryState.LoadingState.Error)
+            }
+        }
     }
 
-    private suspend fun fetchCarInfo() {
+    private suspend fun fetchCarInfo(): Map<Make, List<Model>> {
         val makes = carService.getMakes().data.map { Make.fromApi(it) }
-        val makesToModels = coroutineScope {
+        return coroutineScope {
             val foo = makes.map {
                 async {
                     carService.getModels(
@@ -56,6 +74,5 @@ class MakeAndModelRepository @Inject constructor(
                     }
                 }
         }
-        _state.update { it.copy(makesToModels = makesToModels) }
     }
 }

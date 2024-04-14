@@ -4,6 +4,15 @@ import com.paulklauser.cars.makes.Make
 import com.paulklauser.cars.models.Model
 
 data class MakeAndModelRepositoryState(
-    val makesToModels: Map<Make, List<Model>>,
+    val loadingState: LoadingState,
     val selectedYear: Year
-)
+) {
+    sealed class LoadingState {
+        data object Loading : LoadingState()
+        data class Success(
+            val makesToModels: Map<Make, List<Model>>,
+        ) : LoadingState()
+
+        data object Error : LoadingState()
+    }
+}

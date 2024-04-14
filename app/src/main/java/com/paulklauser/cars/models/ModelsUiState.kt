@@ -11,5 +11,6 @@ data class ModelsUiState(
         data class Success(
             val models: ImmutableList<ModelRowItem>,
         ) : LoadingState()
+        data object Error : LoadingState()
     }
 }

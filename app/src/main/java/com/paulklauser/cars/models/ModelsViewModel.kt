@@ -4,6 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.paulklauser.cars.commonapi.MakeAndModelRepository
+import com.paulklauser.cars.commonapi.MakeAndModelRepositoryState
+import com.paulklauser.cars.makes.Make
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.async
@@ -12,6 +14,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,13 +27,59 @@ class ModelsViewModel @Inject constructor(
     private val makeId: String =
         savedStateHandle[MAKE_ID_PATTERN] ?: throw IllegalArgumentException("Make ID not provided!")
     val uiState = makeAndModelRepository.state.map { makeAndModelState ->
-        val make = requireNotNull(makeAndModelState.makesToModels.keys.find { it.id == makeId }) {
+        when (makeAndModelState.loadingState) {
+            MakeAndModelRepositoryState.LoadingState.Error -> ModelsUiState(
+                loadingState = ModelsUiState.LoadingState.Error,
+                make = ""
+            )
+
+            MakeAndModelRepositoryState.LoadingState.Loading -> ModelsUiState(
+                loadingState = ModelsUiState.LoadingState.Loading,
+                make = ""
+            )
+
+            is MakeAndModelRepositoryState.LoadingState.Success -> resolveSuccessState(
+                makeAndModelState.loadingState.makesToModels
+            )
+        }
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
+        ModelsUiState(loadingState = ModelsUiState.LoadingState.Loading, make = "")
+    )
+
+    private suspend fun resolveSuccessState(makesToModels: Map<Make, List<Model>>): ModelsUiState {
+        val make = requireNotNull(makesToModels.keys.find { it.id == makeId }) {
             "Make ID not found in map of makes to models!"
         }
-        val models = requireNotNull(makeAndModelState.makesToModels[make]) {
+        val models = requireNotNull(makesToModels[make]) {
             "Make ID not found in map of makes to models!"
         }
-        val modelToTrims = coroutineScope {
+        val modelToTrims = try {
+            fetchTrimsForModels(models)
+        } catch (e: Exception) {
+            Timber.e(e)
+            return ModelsUiState(
+                loadingState = ModelsUiState.LoadingState.Error,
+                make = ""
+            )
+        }
+        val modelItems = models.map {
+            ModelRowItem(
+                model = it,
+                trims = modelToTrims[it]!!
+            )
+        }.toPersistentList()
+        return ModelsUiState(
+            loadingState = ModelsUiState.LoadingState.Success(
+                models = modelItems
+            ),
+            make = make.name
+        )
+    }
+
+    private suspend fun fetchTrimsForModels(models: List<Model>): Map<Model, List<Trim>> {
+        return coroutineScope {
             val trimRequests = models.associateWith {
                 async {
                     // TODO: PK - I don't love grabbing the year from the other repo like this.
@@ -43,29 +92,11 @@ class ModelsViewModel @Inject constructor(
             }
             trimRequests.mapValues { it.value.await() }
         }
-        val modelItems =
-            models.map {
-                ModelRowItem(
-                    model = it,
-                    trims = modelToTrims[it]!!
-                )
-            }.toPersistentList()
-        ModelsUiState(
-            loadingState = ModelsUiState.LoadingState.Success(
-                models = modelItems
-            ),
-            make = make.name
-        )
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
-        ModelsUiState(loadingState = ModelsUiState.LoadingState.Loading, make = "")
-    )
+    }
 
     fun fetchIfNeeded() {
         viewModelScope.launch {
             makeAndModelRepository.fetchCarInfoIfNeeded()
-
         }
     }
 

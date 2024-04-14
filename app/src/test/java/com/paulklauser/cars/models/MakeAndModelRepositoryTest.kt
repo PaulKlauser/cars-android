@@ -62,12 +62,14 @@ class MakeAndModelRepositoryTest {
         repository.state.test {
             assertThat(awaitItem()).isEqualTo(
                 MakeAndModelRepositoryState(
-                    makesToModels = mapOf(
-                        Make(id = "1", name = "BMW") to listOf(
-                            Model(id = "1", name = "M3", makeId = "1")
-                        ),
-                        Make(id = "2", name = "Volvo") to listOf(
-                            Model(id = "4", name = "XC60", makeId = "2")
+                    loadingState = MakeAndModelRepositoryState.LoadingState.Success(
+                        makesToModels = mapOf(
+                            Make(id = "1", name = "BMW") to listOf(
+                                Model(id = "1", name = "M3", makeId = "1")
+                            ),
+                            Make(id = "2", name = "Volvo") to listOf(
+                                Model(id = "4", name = "XC60", makeId = "2")
+                            )
                         )
                     ),
                     selectedYear = Year.TWENTY_FIFTEEN
@@ -108,9 +110,11 @@ class MakeAndModelRepositoryTest {
         repository.state.test {
             assertThat(awaitItem()).isEqualTo(
                 MakeAndModelRepositoryState(
-                    makesToModels = mapOf(
-                        Make(id = "1", name = "BMW") to listOf(
-                            Model(id = "1", name = "M3", makeId = "1")
+                    loadingState = MakeAndModelRepositoryState.LoadingState.Success(
+                        makesToModels = mapOf(
+                            Make(id = "1", name = "BMW") to listOf(
+                                Model(id = "1", name = "M3", makeId = "1")
+                            )
                         )
                     ),
                     selectedYear = Year.TWENTY_FIFTEEN

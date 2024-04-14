@@ -30,7 +30,7 @@ class ModelsViewModelTest {
     }
 
     @Test
-    fun `uiState contains models for make ID`() = runTest {
+    fun `uiState contains models and trims for make ID`() = runTest {
         carService._makesResponse = MakesResponse(
             data = listOf(
                 ApiMake(
@@ -126,6 +126,40 @@ class ModelsViewModelTest {
                         )
                     ),
                     make = "Ford"
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `failure to fetch models gives error state`() = runTest {
+        carService._shouldErrorOnModels = true
+        val viewModel = createViewModel()
+
+        viewModel.fetchIfNeeded()
+
+        viewModel.uiState.test {
+            assertThat(awaitItem()).isEqualTo(
+                ModelsUiState(
+                    loadingState = ModelsUiState.LoadingState.Error,
+                    make = ""
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `failure to fetch trims gives error state`() = runTest {
+        carService._shouldErrorOnTrims = true
+        val viewModel = createViewModel()
+
+        viewModel.fetchIfNeeded()
+
+        viewModel.uiState.test {
+            assertThat(awaitItem()).isEqualTo(
+                ModelsUiState(
+                    loadingState = ModelsUiState.LoadingState.Error,
+                    make = ""
                 )
             )
         }

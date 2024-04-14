@@ -14,5 +14,9 @@ data class MakesUiState(
         }
 
         data class Success(override val makes: ImmutableList<Make>) : LoadingState()
+
+        data object Error : LoadingState() {
+            override val makes: ImmutableList<Make>? = null
+        }
     }
 }

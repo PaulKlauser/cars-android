@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.paulklauser.cars.Error
 import com.paulklauser.cars.Loading
 import com.paulklauser.cars.commonapi.Year
 import com.paulklauser.cars.ui.theme.CarsTheme
@@ -37,7 +38,8 @@ fun MakesScreenRoute(onMakeSelected: (String) -> Unit) {
     MakesScreen(
         uiState = uiState,
         onMakeSelected = onMakeSelected,
-        onYearSelected = vm::onYearSelected
+        onYearSelected = vm::onYearSelected,
+        vm::fetchMakes
     )
 }
 
@@ -45,7 +47,8 @@ fun MakesScreenRoute(onMakeSelected: (String) -> Unit) {
 fun MakesScreen(
     uiState: MakesUiState,
     onMakeSelected: (String) -> Unit,
-    onYearSelected: (Year) -> Unit
+    onYearSelected: (Year) -> Unit,
+    onRetry: () -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     Scaffold(
@@ -74,6 +77,11 @@ fun MakesScreen(
                     is MakesUiState.LoadingState.Success -> Loaded(
                         it.makes,
                         onMakeSelected
+                    )
+
+                    MakesUiState.LoadingState.Error -> Error(
+                        onRetry = onRetry,
+                        modifier = Modifier.fillMaxSize()
                     )
                 }
             }
@@ -106,7 +114,8 @@ private fun MakesScreenPreview() {
                 selectedYear = Year.TWENTY_FIFTEEN
             ),
             onMakeSelected = {},
-            onYearSelected = {}
+            onYearSelected = {},
+            onRetry = {}
         )
     }
 }
