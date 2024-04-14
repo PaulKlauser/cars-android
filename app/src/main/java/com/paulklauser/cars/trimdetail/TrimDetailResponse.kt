@@ -27,11 +27,11 @@ data class TrimDetailResponse(
     @Serializable
     data class MakeModelTrimMileage(
         @SerialName("combined_mpg")
-        val combinedMpg: Int,
+        val combinedMpg: Int?,
         @SerialName("epa_city_mpg")
-        val epaCityMpg: Int,
+        val epaCityMpg: Int?,
         @SerialName("epa_highway_mpg")
-        val epaHighwayMpg: Int
+        val epaHighwayMpg: Int?
     )
 
     @Serializable

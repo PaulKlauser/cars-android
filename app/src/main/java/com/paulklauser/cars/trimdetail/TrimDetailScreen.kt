@@ -109,12 +109,14 @@ private fun Loaded(trimDetail: TrimDetail) {
         ) {
             Text(text = trimDetail.msrp)
         }
-        FuelEconomy(
-            cityMpg = trimDetail.cityMpg,
-            highwayMpg = trimDetail.highwayMpg,
-            combinedMpg = trimDetail.combinedMpg,
-            modifier = Modifier.fillMaxWidth()
-        )
+        trimDetail.fuelEconomy?.let {
+            FuelEconomy(
+                cityMpg = it.cityMpg,
+                highwayMpg = it.highwayMpg,
+                combinedMpg = it.combinedMpg,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
         DetailCard(title = stringResource(R.string.engine), modifier = Modifier.fillMaxWidth()) {
             val horsePower = buildAnnotatedString {
                 withStyle(MaterialTheme.typography.titleMedium.toSpanStyle()) {
@@ -220,9 +222,11 @@ private class PreviewProvider : CollectionPreviewParameterProvider<TrimDetailUiS
                     model = "Corolla",
                     description = "FWD 4dr Sedan (2.0L 4cyl CVT)",
                     msrp = "$100,000",
-                    combinedMpg = "33",
-                    cityMpg = "31",
-                    highwayMpg = "38",
+                    fuelEconomy = TrimDetail.FuelEconomy(
+                        combinedMpg = "33",
+                        cityMpg = "31",
+                        highwayMpg = "38"
+                    ),
                     horsepower = "169",
                     torque = "151"
                 )

@@ -6,9 +6,7 @@ data class TrimDetail(
     val model: String,
     val description: String,
     val msrp: String,
-    val combinedMpg: String,
-    val cityMpg: String,
-    val highwayMpg: String,
+    val fuelEconomy: FuelEconomy?,
     val horsepower: String,
     val torque: String
 ) {
@@ -20,12 +18,31 @@ data class TrimDetail(
                 model = trimDetailResponse.makeModel.name,
                 description = trimDetailResponse.description,
                 msrp = "$${trimDetailResponse.msrpDollars}",
-                combinedMpg = trimDetailResponse.makeModelTrimMileage.combinedMpg.toString(),
-                cityMpg = trimDetailResponse.makeModelTrimMileage.epaCityMpg.toString(),
-                highwayMpg = trimDetailResponse.makeModelTrimMileage.epaHighwayMpg.toString(),
+                fuelEconomy = resolveFuelEconomy(trimDetailResponse),
                 horsepower = "${trimDetailResponse.makeModelTrimEngine.horsepowerHp}",
                 torque = "${trimDetailResponse.makeModelTrimEngine.torqueFtLbs}"
             )
         }
+
+        private fun resolveFuelEconomy(trimDetailResponse: TrimDetailResponse): FuelEconomy? {
+            return if (trimDetailResponse.makeModelTrimMileage.combinedMpg == null ||
+                trimDetailResponse.makeModelTrimMileage.epaCityMpg == null ||
+                trimDetailResponse.makeModelTrimMileage.epaHighwayMpg == null
+            ) {
+                null
+            } else {
+                FuelEconomy(
+                    combinedMpg = trimDetailResponse.makeModelTrimMileage.combinedMpg.toString(),
+                    cityMpg = trimDetailResponse.makeModelTrimMileage.epaCityMpg.toString(),
+                    highwayMpg = trimDetailResponse.makeModelTrimMileage.epaHighwayMpg.toString()
+                )
+            }
+        }
     }
+
+    data class FuelEconomy(
+        val combinedMpg: String,
+        val cityMpg: String,
+        val highwayMpg: String
+    )
 }
