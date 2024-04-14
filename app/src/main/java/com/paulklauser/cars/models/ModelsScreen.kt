@@ -124,7 +124,13 @@ private fun Loaded(
         items(models) { model ->
             ModelRow(
                 item = model,
-                onClick = { expandedId = it },
+                onClick = {
+                    expandedId = if (expandedId == it) {
+                        null
+                    } else {
+                        it
+                    }
+                },
                 expanded = expandedId == model.model.id,
                 onTrimSelected = onTrimSelected
             )
