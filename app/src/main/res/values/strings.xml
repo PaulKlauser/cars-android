@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Cars!</string>
+    <string name="available_trims">Available Trims:</string>
 </resources>
