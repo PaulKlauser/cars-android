@@ -111,13 +111,13 @@ private fun Loaded(
     models: ImmutableList<ModelRowItem>,
     onTrimSelected: (String) -> Unit
 ) {
+    var expandedId by rememberSaveable { mutableStateOf<String?>(null) }
     LazyColumn(contentPadding = WindowInsets.navigationBars.asPaddingValues()) {
         items(models) { model ->
-            var expanded by rememberSaveable { mutableStateOf(false) }
             ModelRow(
                 item = model,
-                onClick = { expanded = !expanded },
-                expanded = expanded,
+                onClick = { expandedId = it },
+                expanded = expandedId == model.model.id,
                 onTrimSelected = onTrimSelected
             )
         }
