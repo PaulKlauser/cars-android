@@ -1,5 +1,11 @@
 package com.paulklauser.cars.models
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,7 +43,19 @@ fun ModelRow(
             text = item.model.name,
             modifier = Modifier.padding(16.dp)
         )
-        if (expanded) {
+        AnimatedVisibility(
+            visible = expanded,
+            enter = fadeIn(animationSpec = tween(delayMillis = 200)) + expandVertically(
+                animationSpec = tween(),
+                expandFrom = Alignment.CenterVertically,
+                clip = false
+            ),
+            exit = fadeOut() + shrinkVertically(
+                animationSpec = tween(delayMillis = 200),
+                shrinkTowards = Alignment.CenterVertically,
+                clip = false
+            )
+        ) {
             Column(
                 modifier = Modifier.padding(8.dp),
                 verticalArrangement = Arrangement.spacedBy(0.dp)
