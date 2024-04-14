@@ -6,7 +6,7 @@
     <string name="fuel_economy">Fuel Economy</string>
     <string name="highway">Highway</string>
     <string name="city">City</string>
-    <string name="combined">Combined</string>
+    <string name="combined">MPG Combined</string>
     <string name="power">Power</string>
     <string name="engine">Engine</string>
     <string name="hp">"%1$s hp"</string>

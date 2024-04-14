@@ -2,13 +2,11 @@ package com.paulklauser.cars.trimdetail
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Card
@@ -106,11 +104,12 @@ private fun Loaded(trimDetail: TrimDetail) {
             )
         )
         DetailCard(
-            label = stringResource(R.string.msrp),
-            value = trimDetail.msrp,
+            title = stringResource(R.string.msrp),
             modifier = Modifier
                 .fillMaxWidth()
-        )
+        ) {
+            Text(text = trimDetail.msrp)
+        }
         FuelEconomy(
             cityMpg = trimDetail.cityMpg,
             highwayMpg = trimDetail.highwayMpg,
@@ -119,7 +118,7 @@ private fun Loaded(trimDetail: TrimDetail) {
         )
         DetailCard(title = stringResource(R.string.engine), modifier = Modifier.fillMaxWidth()) {
             val horsePower = buildAnnotatedString {
-                withStyle(MaterialTheme.typography.labelLarge.toSpanStyle()) {
+                withStyle(MaterialTheme.typography.titleMedium.toSpanStyle()) {
                     append(stringResource(R.string.power))
                 }
                 withStyle(MaterialTheme.typography.bodyLarge.toSpanStyle()) {
@@ -128,7 +127,7 @@ private fun Loaded(trimDetail: TrimDetail) {
                 }
             }
             val torque = buildAnnotatedString {
-                withStyle(MaterialTheme.typography.labelLarge.toSpanStyle()) {
+                withStyle(MaterialTheme.typography.titleMedium.toSpanStyle()) {
                     append(stringResource(R.string.torque))
                 }
                 withStyle(MaterialTheme.typography.bodyLarge.toSpanStyle()) {
@@ -140,16 +139,6 @@ private fun Loaded(trimDetail: TrimDetail) {
                 Text(text = horsePower)
                 Text(text = torque)
             }
-        }
-    }
-}
-
-@Composable
-private fun DetailCard(label: String, value: String, modifier: Modifier = Modifier) {
-    Card(modifier = modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp)) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = label, style = MaterialTheme.typography.labelLarge)
-            Text(text = value)
         }
     }
 }
@@ -176,40 +165,37 @@ private fun FuelEconomy(
     combinedMpg: String,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    DetailCard(
+        title = stringResource(R.string.fuel_economy),
         modifier = modifier
-            .padding(start = 16.dp, top = 16.dp, end = 16.dp)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                text = stringResource(R.string.fuel_economy),
-                style = MaterialTheme.typography.labelLarge
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(verticalAlignment = Alignment.Bottom) {
-                Text(text = highwayMpg, style = MaterialTheme.typography.titleMedium)
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(text = stringResource(R.string.highway))
+        val highway = buildAnnotatedString {
+            withStyle(MaterialTheme.typography.titleMedium.toSpanStyle()) {
+                append(highwayMpg)
             }
-            Row(verticalAlignment = Alignment.Bottom) {
-                Text(text = cityMpg, style = MaterialTheme.typography.titleMedium)
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(text = stringResource(R.string.city))
+            append(" ")
+            append(stringResource(id = R.string.highway))
+        }
+        val city = buildAnnotatedString {
+            withStyle(MaterialTheme.typography.titleMedium.toSpanStyle()) {
+                append(cityMpg)
             }
-            Spacer(modifier = Modifier.height(4.dp))
-            Row(verticalAlignment = Alignment.Bottom) {
-                Text(
-                    text = combinedMpg,
-                    style = MaterialTheme.typography.titleLarge,
-                    color = Green
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = stringResource(R.string.combined),
-                    style = MaterialTheme.typography.titleLarge
-                )
+            append(" ")
+            append(stringResource(id = R.string.city))
+        }
+        val combined = buildAnnotatedString {
+            withStyle(MaterialTheme.typography.titleLarge.toSpanStyle().copy(color = Green)) {
+                append(combinedMpg)
+            }
+            withStyle(MaterialTheme.typography.titleLarge.toSpanStyle()) {
+                append(" ")
+                append(stringResource(id = R.string.combined))
             }
         }
+        Text(text = highway)
+        Text(text = city)
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(text = combined)
     }
 }
 
