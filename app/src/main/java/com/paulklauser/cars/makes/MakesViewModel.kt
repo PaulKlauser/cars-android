@@ -5,12 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.paulklauser.cars.commonapi.MakeAndModelRepository
 import com.paulklauser.cars.commonapi.Year
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,16 +20,26 @@ class MakesViewModel @Inject constructor(
     private val makeAndModelRepository: MakeAndModelRepository
 ) : ViewModel() {
 
-    val uiState = makeAndModelRepository.state.map { repoState ->
+    private val vmState = MutableStateFlow(MakesViewModelState(isLoading = true))
+    val uiState = combine(
+        makeAndModelRepository.state,
+        vmState
+    ) { repoState, state ->
         MakesUiState(
-            makes = repoState.makesToModels.keys.toPersistentList(),
+            loadingState = if (state.isLoading) {
+                MakesUiState.LoadingState.Loading
+            } else {
+                MakesUiState.LoadingState.Success(
+                    makes = repoState.makesToModels.keys.toPersistentList()
+                )
+            },
             selectedYear = repoState.selectedYear
         )
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
         MakesUiState(
-            makes = persistentListOf(),
+            loadingState = MakesUiState.LoadingState.Loading,
             selectedYear = Year.TWENTY_FIFTEEN
         )
     )
@@ -37,15 +48,19 @@ class MakesViewModel @Inject constructor(
 
     fun fetchMakes() {
         fetchJob?.cancel()
+        vmState.update { it.copy(isLoading = true) }
         fetchJob = viewModelScope.launch {
             makeAndModelRepository.fetchCarInfoIfNeeded()
+            vmState.update { it.copy(isLoading = false) }
         }
     }
 
     fun onYearSelected(year: Year) {
         fetchJob?.cancel()
+        vmState.update { it.copy(isLoading = true) }
         fetchJob = viewModelScope.launch {
             makeAndModelRepository.selectYear(year)
+            vmState.update { it.copy(isLoading = false) }
         }
     }
 }

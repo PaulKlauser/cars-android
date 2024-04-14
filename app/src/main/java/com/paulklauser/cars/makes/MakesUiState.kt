@@ -4,6 +4,15 @@ import com.paulklauser.cars.commonapi.Year
 import kotlinx.collections.immutable.ImmutableList
 
 data class MakesUiState(
-    val makes: ImmutableList<Make>,
+    val loadingState: LoadingState,
     val selectedYear: Year
-)
+) {
+    sealed class LoadingState {
+        abstract val makes: ImmutableList<Make>?
+        data object Loading : LoadingState() {
+            override val makes: ImmutableList<Make>? = null
+        }
+
+        data class Success(override val makes: ImmutableList<Make>) : LoadingState()
+    }
+}
