@@ -34,8 +34,8 @@ class MainActivity : ComponentActivity() {
                         )
                         models(
                             onNavigateBack = { navController.popBackStack() },
-                            onModelSelected = { modelId ->
-                                navController.navigate("$MODEL_DETAIL_ROUTE_PATTERN/$modelId")
+                            onTrimSelected = { trimId ->
+                                navController.navigate("$MODEL_DETAIL_ROUTE_PATTERN/$trimId")
                             }
                         )
                         modelDetail()

@@ -14,6 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -23,7 +26,7 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 fun ModelsRoute(
     onNavigateBack: () -> Unit,
-    onModelSelected: (String) -> Unit
+    onTrimSelected: (String) -> Unit
 ) {
     val vm = hiltViewModel<ModelsViewModel>()
     val uiState by vm.uiState.collectAsState()
@@ -33,7 +36,7 @@ fun ModelsRoute(
     ModelsScreen(
         uiState = uiState,
         onNavigateBack = onNavigateBack,
-        onModelSelected = onModelSelected
+        onTrimSelected = onTrimSelected
     )
 }
 
@@ -41,7 +44,7 @@ fun ModelsRoute(
 fun ModelsScreen(
     uiState: ModelsUiState,
     onNavigateBack: () -> Unit,
-    onModelSelected: (String) -> Unit
+    onTrimSelected: (String) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -60,9 +63,12 @@ fun ModelsScreen(
     ) { paddingValues ->
         LazyColumn(modifier = Modifier.padding(paddingValues = paddingValues)) {
             items(uiState.models) { model ->
+                var expanded by rememberSaveable { mutableStateOf(false) }
                 ModelRow(
-                    model = model,
-                    onClick = onModelSelected
+                    item = model,
+                    onClick = { expanded = !expanded },
+                    expanded = expanded,
+                    onTrimSelected = onTrimSelected
                 )
             }
         }
@@ -76,14 +82,45 @@ private fun ModelsScreenPreview() {
         ModelsScreen(
             uiState = ModelsUiState(
                 models = persistentListOf(
-                    Model(id = "1", name = "Model 1", makeId = "1"),
-                    Model(id = "2", name = "Model 2", makeId = "2"),
-                    Model(id = "3", name = "Model 3", makeId = "3")
+                    ModelRowItem(
+                        model = Model(
+                            id = "1",
+                            name = "M3",
+                            makeId = "1"
+                        ),
+                        trims = listOf(
+                            Trim(
+                                id = "1",
+                                description = "LE"
+                            ),
+                            Trim(
+                                id = "2",
+                                description = "SE"
+                            )
+                        )
+                    ),
+                    ModelRowItem(
+                        model = Model(
+                            id = "2",
+                            name = "M5",
+                            makeId = "1"
+                        ),
+                        trims = listOf(
+                            Trim(
+                                id = "3",
+                                description = "LE"
+                            ),
+                            Trim(
+                                id = "4",
+                                description = "SE"
+                            )
+                        )
+                    )
                 ),
                 make = "BMW"
             ),
             onNavigateBack = { },
-            onModelSelected = { }
+            onTrimSelected = { }
         )
     }
 }

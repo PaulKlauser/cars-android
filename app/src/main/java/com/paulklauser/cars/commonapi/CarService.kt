@@ -2,6 +2,7 @@ package com.paulklauser.cars.commonapi
 
 import com.paulklauser.cars.makes.MakesResponse
 import com.paulklauser.cars.modeldetail.TrimResponse
+import com.paulklauser.cars.models.ModelTrimResponse
 import com.paulklauser.cars.models.ModelsResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -12,8 +13,17 @@ interface CarService {
     suspend fun getMakes(): MakesResponse
 
     @GET("api/models")
-    suspend fun getModels(@Query("make_id") makeId: String, @Query("year") year: String): ModelsResponse
+    suspend fun getModels(
+        @Query("make_id") makeId: String,
+        @Query("year") year: String
+    ): ModelsResponse
 
     @GET("api/trims/{trimId}")
     suspend fun getTrim(@Path("trimId") trimId: String): TrimResponse
+
+    @GET("api/trims")
+    suspend fun getTrims(
+        @Query("make_model_id") makeModelId: String,
+        @Query("year") year: String
+    ): ModelTrimResponse
 }

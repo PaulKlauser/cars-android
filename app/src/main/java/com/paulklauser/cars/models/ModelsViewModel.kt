@@ -28,8 +28,9 @@ class ModelsViewModel @Inject constructor(
         val models = requireNotNull(makeAndModelState.makesToModels[make]) {
             "Make ID not found in map of makes to models!"
         }
+        val modelItems = models.map { ModelRowItem(model = it, trims = emptyList()) }.toPersistentList()
         ModelsUiState(
-            models = models.toPersistentList(),
+            models = modelItems,
             make = make.name
         )
     }.stateIn(
