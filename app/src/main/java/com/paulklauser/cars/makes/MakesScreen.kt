@@ -1,5 +1,6 @@
 package com.paulklauser.cars.makes
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -64,15 +65,17 @@ fun MakesScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
-            when (uiState.loadingState) {
-                MakesUiState.LoadingState.Loading -> Loading(
-                    modifier = Modifier.fillMaxSize()
-                )
+            AnimatedContent(targetState = uiState.loadingState) {
+                when (it) {
+                    MakesUiState.LoadingState.Loading -> Loading(
+                        modifier = Modifier.fillMaxSize()
+                    )
 
-                is MakesUiState.LoadingState.Success -> Loaded(
-                    uiState.loadingState.makes,
-                    onMakeSelected
-                )
+                    is MakesUiState.LoadingState.Success -> Loaded(
+                        it.makes,
+                        onMakeSelected
+                    )
+                }
             }
         }
     }
