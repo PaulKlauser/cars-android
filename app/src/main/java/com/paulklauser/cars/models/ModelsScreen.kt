@@ -1,7 +1,10 @@
 package com.paulklauser.cars.models
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -12,6 +15,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -20,6 +24,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.paulklauser.cars.Loading
@@ -50,6 +55,7 @@ fun ModelsScreen(
     onNavigateBack: () -> Unit,
     onTrimSelected: (String) -> Unit
 ) {
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     Scaffold(
         topBar = {
             TopAppBar(
@@ -66,9 +72,12 @@ fun ModelsScreen(
                             contentDescription = "Back"
                         )
                     }
-                }
+                },
+                scrollBehavior = scrollBehavior
             )
-        }
+        },
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
             when (uiState.loadingState) {
@@ -90,7 +99,7 @@ private fun Loaded(
     models: ImmutableList<ModelRowItem>,
     onTrimSelected: (String) -> Unit
 ) {
-    LazyColumn {
+    LazyColumn(contentPadding = WindowInsets.navigationBars.asPaddingValues()) {
         items(models) { model ->
             var expanded by rememberSaveable { mutableStateOf(false) }
             ModelRow(
