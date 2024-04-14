@@ -1,6 +1,5 @@
 package com.paulklauser.cars.commonapi
 
-import com.paulklauser.cars.makes.CarService
 import com.paulklauser.cars.makes.Make
 import com.paulklauser.cars.models.Model
 import kotlinx.coroutines.async

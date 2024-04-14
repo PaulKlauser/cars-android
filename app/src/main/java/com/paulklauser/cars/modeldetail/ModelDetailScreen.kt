@@ -3,6 +3,7 @@ package com.paulklauser.cars.modeldetail
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -13,6 +14,9 @@ import com.paulklauser.cars.ui.theme.CarsTheme
 fun ModelDetailRoute() {
     val vm = hiltViewModel<ModelDetailViewModel>()
     val uiState by vm.uiState.collectAsState()
+    LaunchedEffect(Unit) {
+        vm.fetchModelDetail()
+    }
     ModelDetailScreen(uiState = uiState)
 }
 

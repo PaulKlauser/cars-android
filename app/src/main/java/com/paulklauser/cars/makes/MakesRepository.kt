@@ -1,5 +1,6 @@
 package com.paulklauser.cars.makes
 
+import com.paulklauser.cars.commonapi.CarService
 import javax.inject.Inject
 
 class MakesRepository @Inject constructor(
