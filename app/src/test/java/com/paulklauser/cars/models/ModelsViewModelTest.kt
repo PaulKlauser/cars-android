@@ -87,43 +87,45 @@ class ModelsViewModelTest {
         viewModel.uiState.test {
             assertThat(awaitItem()).isEqualTo(
                 ModelsUiState(
-                    models = persistentListOf(
-                        ModelRowItem(
-                            model = Model(
-                                id = "1",
-                                name = "F-150",
-                                makeId = "1"
-                            ),
-                            trims = listOf(
-                                Trim(
+                    loadingState = ModelsUiState.LoadingState.Success(
+                        models = persistentListOf(
+                            ModelRowItem(
+                                model = Model(
                                     id = "1",
-                                    description = "XL"
+                                    name = "F-150",
+                                    makeId = "1"
                                 ),
-                                Trim(
+                                trims = listOf(
+                                    Trim(
+                                        id = "1",
+                                        description = "XL"
+                                    ),
+                                    Trim(
+                                        id = "2",
+                                        description = "XLT"
+                                    )
+                                )
+                            ),
+                            ModelRowItem(
+                                model = Model(
                                     id = "2",
-                                    description = "XLT"
+                                    name = "Mustang",
+                                    makeId = "1"
+                                ),
+                                trims = listOf(
+                                    Trim(
+                                        id = "3",
+                                        description = "EcoBoost"
+                                    ),
+                                    Trim(
+                                        id = "4",
+                                        description = "GT"
+                                    )
                                 )
                             )
                         ),
-                        ModelRowItem(
-                            model = Model(
-                                id = "2",
-                                name = "Mustang",
-                                makeId = "1"
-                            ),
-                            trims = listOf(
-                                Trim(
-                                    id = "3",
-                                    description = "EcoBoost"
-                                ),
-                                Trim(
-                                    id = "4",
-                                    description = "GT"
-                                )
-                            )
-                        )
-                    ),
-                    make = "Ford"
+                        make = "Ford"
+                    )
                 )
             )
         }

@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.paulklauser.cars.commonapi.MakeAndModelRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -52,16 +51,15 @@ class ModelsViewModel @Inject constructor(
                 )
             }.toPersistentList()
         ModelsUiState(
-            models = modelItems,
-            make = make.name
+            loadingState = ModelsUiState.LoadingState.Success(
+                models = modelItems,
+                make = make.name
+            )
         )
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000L),
-        ModelsUiState(
-            models = persistentListOf(),
-            make = ""
-        )
+        ModelsUiState(loadingState = ModelsUiState.LoadingState.Loading)
     )
 
     fun fetchIfNeeded() {
