@@ -27,6 +27,7 @@ class TrimDetailViewModel @Inject constructor(
 
     fun fetchTrimDetail() {
         viewModelScope.launch {
+            _uiState.update { it.copy(loadingState = TrimDetailUiState.LoadingState.Loading) }
             when (val response = trimDetailRepository.getTrimDetails(trimId)) {
                 is ApiResponse.Success -> {
                     _uiState.update {
@@ -39,7 +40,11 @@ class TrimDetailViewModel @Inject constructor(
                 }
 
                 is ApiResponse.Error -> {
-                    // TODO: PK
+                    _uiState.update {
+                        it.copy(
+                            loadingState = TrimDetailUiState.LoadingState.Error
+                        )
+                    }
                 }
             }
         }

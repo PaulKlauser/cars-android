@@ -11,5 +11,9 @@ data class TrimDetailUiState(
         }
 
         data class Success(override val trimDetail: TrimDetail) : LoadingState()
+
+        data object Error : LoadingState() {
+            override val trimDetail: TrimDetail? = null
+        }
     }
 }

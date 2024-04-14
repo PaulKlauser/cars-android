@@ -71,6 +71,7 @@ class FakeCarService : CarService {
             )
         )
     )
+    var _shouldError = false
 
     override suspend fun getMakes(): MakesResponse {
         return _makesResponse
@@ -80,8 +81,33 @@ class FakeCarService : CarService {
         return _modelMap[makeId] ?: ModelsResponse(emptyList())
     }
 
+    @Suppress("TooGenericExceptionThrown")
     override suspend fun getTrimDetails(trimId: String): TrimDetailResponse {
-        TODO("Not yet implemented")
+        if (_shouldError) {
+            throw Exception()
+        }
+        return TrimDetailResponse(
+            year = 2021,
+            name = "Corolla",
+            description = "LE",
+            msrpDollars = 20000,
+            makeModel = TrimDetailResponse.MakeModel(
+                name = "Corolla",
+                make = ApiMake(
+                    id = 1,
+                    name = "Toyota"
+                )
+            ),
+            makeModelTrimMileage = TrimDetailResponse.MakeModelTrimMileage(
+                combinedMpg = 30,
+                epaCityMpg = 25,
+                epaHighwayMpg = 35
+            ),
+            makeModelTrimEngine = TrimDetailResponse.MakeModelTrimEngine(
+                horsepowerHp = 150,
+                torqueFtLbs = 150
+            )
+        )
     }
 
     override suspend fun getTrims(makeModelId: String, year: String): ModelTrimResponse {
