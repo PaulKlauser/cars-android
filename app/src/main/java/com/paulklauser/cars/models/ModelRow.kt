@@ -1,5 +1,6 @@
 package com.paulklauser.cars.models
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
@@ -34,7 +35,7 @@ fun ModelRow(
             modifier = Modifier.padding(16.dp)
         )
         if (expanded) {
-            FlowRow(modifier = Modifier.padding(8.dp)) {
+            FlowRow(modifier = Modifier.padding(8.dp), verticalArrangement = Arrangement.Center) {
                 item.trims.forEach { trim ->
                     Button(onClick = { onTrimSelected(trim.id) }) {
                         Text(text = trim.description)
@@ -61,10 +62,6 @@ private fun ModelRowPreview() {
                     Trim(
                         id = "1",
                         description = "LE"
-                    ),
-                    Trim(
-                        id = "2",
-                        description = "SE"
                     )
                 )
             ),
@@ -94,6 +91,32 @@ private fun ModelRowPreviewExpanded() {
                     Trim(
                         id = "2",
                         description = "SE"
+                    ),
+                    Trim(
+                        id = "3",
+                        description = "XSE"
+                    ),
+                    Trim(
+                        id = "4",
+                        description = "XLE"
+                    ),
+                    Trim(
+                        id = "5",
+                        description = "Hybrid"
+                    ),
+                    Trim(
+                        id = "6",
+                        description = "XSE Hybrid"
+                    ),
+                    Trim(
+                        id = "7",
+                        description = "XLE Hybrid Really long name so long it goes off the screen " +
+                                "and wraps to the next line and keeps on going"
+                    ),
+                    Trim(
+                        id = "7",
+                        description = "XLE Hybrid Really long name so long it goes off the screen " +
+                                "and wraps to the next line and keeps on going"
                     )
                 )
             ),

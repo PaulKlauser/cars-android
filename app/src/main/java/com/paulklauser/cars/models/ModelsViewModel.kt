@@ -7,6 +7,8 @@ import com.paulklauser.cars.commonapi.MakeAndModelRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -16,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ModelsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val makeAndModelRepository: MakeAndModelRepository
+    private val makeAndModelRepository: MakeAndModelRepository,
+    private val trimsRepository: TrimsRepository
 ) : ViewModel() {
 
     private val makeId: String =
@@ -28,7 +31,26 @@ class ModelsViewModel @Inject constructor(
         val models = requireNotNull(makeAndModelState.makesToModels[make]) {
             "Make ID not found in map of makes to models!"
         }
-        val modelItems = models.map { ModelRowItem(model = it, trims = emptyList()) }.toPersistentList()
+        val modelToTrims = coroutineScope {
+            val trimRequests = models.associateWith {
+                async {
+                    // TODO: PK - I don't love grabbing the year from the other repo like this.
+                    //  Smells like a use case might be warranted.
+                    trimsRepository.getTrims(
+                        makeModelId = it.id,
+                        year = makeAndModelRepository.state.value.selectedYear.value
+                    )
+                }
+            }
+            trimRequests.mapValues { it.value.await() }
+        }
+        val modelItems =
+            models.map {
+                ModelRowItem(
+                    model = it,
+                    trims = modelToTrims[it]!!
+                )
+            }.toPersistentList()
         ModelsUiState(
             models = modelItems,
             make = make.name
@@ -45,6 +67,7 @@ class ModelsViewModel @Inject constructor(
     fun fetchIfNeeded() {
         viewModelScope.launch {
             makeAndModelRepository.fetchCarInfoIfNeeded()
+
         }
     }
 

@@ -23,7 +23,8 @@ class ModelsViewModelTest {
     private fun createViewModel(): ModelsViewModel {
         return ModelsViewModel(
             savedStateHandle = SavedStateHandle(mapOf(MAKE_ID_PATTERN to "1")),
-            makeAndModelRepository = MakeAndModelRepository(carService)
+            makeAndModelRepository = MakeAndModelRepository(carService),
+            trimsRepository = TrimsRepository(carService)
         )
     }
 
@@ -53,6 +54,32 @@ class ModelsViewModelTest {
                 )
             )
         )
+        carService._trimsMap = mapOf(
+            "1" to ModelTrimResponse(
+                listOf(
+                    ModelTrimResponse.ModelTrim(
+                        id = 1,
+                        description = "XL"
+                    ),
+                    ModelTrimResponse.ModelTrim(
+                        id = 2,
+                        description = "XLT"
+                    )
+                )
+            ),
+            "2" to ModelTrimResponse(
+                listOf(
+                    ModelTrimResponse.ModelTrim(
+                        id = 3,
+                        description = "EcoBoost"
+                    ),
+                    ModelTrimResponse.ModelTrim(
+                        id = 4,
+                        description = "GT"
+                    )
+                )
+            )
+        )
         val viewModel = createViewModel()
         viewModel.fetchIfNeeded()
 
@@ -66,7 +93,16 @@ class ModelsViewModelTest {
                                 name = "F-150",
                                 makeId = "1"
                             ),
-                            trims = emptyList()
+                            trims = listOf(
+                                Trim(
+                                    id = "1",
+                                    description = "XL"
+                                ),
+                                Trim(
+                                    id = "2",
+                                    description = "XLT"
+                                )
+                            )
                         ),
                         ModelRowItem(
                             model = Model(
@@ -74,7 +110,16 @@ class ModelsViewModelTest {
                                 name = "Mustang",
                                 makeId = "1"
                             ),
-                            trims = emptyList()
+                            trims = listOf(
+                                Trim(
+                                    id = "3",
+                                    description = "EcoBoost"
+                                ),
+                                Trim(
+                                    id = "4",
+                                    description = "GT"
+                                )
+                            )
                         )
                     ),
                     make = "Ford"

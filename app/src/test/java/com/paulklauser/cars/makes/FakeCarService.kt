@@ -53,6 +53,24 @@ class FakeCarService : CarService {
             )
         )
     )
+    var _trimsMap = mapOf(
+        "1" to ModelTrimResponse(
+            listOf(
+                ModelTrimResponse.ModelTrim(
+                    id = 1,
+                    description = "LE"
+                ),
+            )
+        ),
+        "2" to ModelTrimResponse(
+            listOf(
+                ModelTrimResponse.ModelTrim(
+                    id = 2,
+                    description = "SE"
+                ),
+            )
+        )
+    )
 
     override suspend fun getMakes(): MakesResponse {
         return _makesResponse
@@ -67,7 +85,7 @@ class FakeCarService : CarService {
     }
 
     override suspend fun getTrims(makeModelId: String, year: String): ModelTrimResponse {
-        TODO("Not yet implemented")
+        return _trimsMap[makeModelId] ?: ModelTrimResponse(emptyList())
     }
 
 }
