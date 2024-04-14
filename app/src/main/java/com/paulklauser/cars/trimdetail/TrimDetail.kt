@@ -8,7 +8,9 @@ data class TrimDetail(
     val msrp: String,
     val combinedMpg: String,
     val cityMpg: String,
-    val highwayMpg: String
+    val highwayMpg: String,
+    val horsepower: String,
+    val torque: String
 ) {
     companion object {
         fun fromTrimDetailResponse(trimDetailResponse: TrimDetailResponse): TrimDetail {
@@ -20,7 +22,9 @@ data class TrimDetail(
                 msrp = "$${trimDetailResponse.msrpDollars}",
                 combinedMpg = trimDetailResponse.makeModelTrimMileage.combinedMpg.toString(),
                 cityMpg = trimDetailResponse.makeModelTrimMileage.epaCityMpg.toString(),
-                highwayMpg = trimDetailResponse.makeModelTrimMileage.epaHighwayMpg.toString()
+                highwayMpg = trimDetailResponse.makeModelTrimMileage.epaHighwayMpg.toString(),
+                horsepower = "${trimDetailResponse.makeModelTrimEngine.horsepowerHp}",
+                torque = "${trimDetailResponse.makeModelTrimEngine.torqueFtLbs}"
             )
         }
     }

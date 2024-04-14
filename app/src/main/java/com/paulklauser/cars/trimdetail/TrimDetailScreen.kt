@@ -26,6 +26,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
@@ -115,6 +117,30 @@ private fun Loaded(trimDetail: TrimDetail) {
             combinedMpg = trimDetail.combinedMpg,
             modifier = Modifier.fillMaxWidth()
         )
+        DetailCard(title = stringResource(R.string.engine), modifier = Modifier.fillMaxWidth()) {
+            val horsePower = buildAnnotatedString {
+                withStyle(MaterialTheme.typography.labelLarge.toSpanStyle()) {
+                    append(stringResource(R.string.power))
+                }
+                withStyle(MaterialTheme.typography.bodyLarge.toSpanStyle()) {
+                    append(" ")
+                    append(stringResource(R.string.hp, trimDetail.horsepower))
+                }
+            }
+            val torque = buildAnnotatedString {
+                withStyle(MaterialTheme.typography.labelLarge.toSpanStyle()) {
+                    append(stringResource(R.string.torque))
+                }
+                withStyle(MaterialTheme.typography.bodyLarge.toSpanStyle()) {
+                    append(" ")
+                    append(stringResource(R.string.lb_ft, trimDetail.torque))
+                }
+            }
+            Column {
+                Text(text = horsePower)
+                Text(text = torque)
+            }
+        }
     }
 }
 
@@ -129,6 +155,21 @@ private fun DetailCard(label: String, value: String, modifier: Modifier = Modifi
 }
 
 @Composable
+private fun DetailCard(
+    title: String,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
+    Card(modifier = modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp)) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(text = title, style = MaterialTheme.typography.titleLarge)
+            Spacer(modifier = Modifier.height(4.dp))
+            content()
+        }
+    }
+}
+
+@Composable
 private fun FuelEconomy(
     cityMpg: String,
     highwayMpg: String,
@@ -137,7 +178,7 @@ private fun FuelEconomy(
 ) {
     Card(
         modifier = modifier
-            .padding(16.dp)
+            .padding(start = 16.dp, top = 16.dp, end = 16.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -195,7 +236,9 @@ private class PreviewProvider : CollectionPreviewParameterProvider<TrimDetailUiS
                     msrp = "$100,000",
                     combinedMpg = "33",
                     cityMpg = "31",
-                    highwayMpg = "38"
+                    highwayMpg = "38",
+                    horsepower = "169",
+                    torque = "151"
                 )
             )
         ),

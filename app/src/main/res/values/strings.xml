@@ -7,4 +7,9 @@
     <string name="highway">Highway</string>
     <string name="city">City</string>
     <string name="combined">Combined</string>
+    <string name="power">Power</string>
+    <string name="engine">Engine</string>
+    <string name="hp">"%1$s hp"</string>
+    <string name="torque">Torque</string>
+    <string name="lb_ft">"%1$s lb-ft"</string>
 </resources>

@@ -14,7 +14,9 @@ data class TrimDetailResponse(
     @SerialName("make_model")
     val makeModel: MakeModel,
     @SerialName("make_model_trim_mileage")
-    val makeModelTrimMileage: MakeModelTrimMileage
+    val makeModelTrimMileage: MakeModelTrimMileage,
+    @SerialName("make_model_trim_engine")
+    val makeModelTrimEngine: MakeModelTrimEngine
 ) {
     @Serializable
     data class MakeModel(
@@ -30,5 +32,13 @@ data class TrimDetailResponse(
         val epaCityMpg: Int,
         @SerialName("epa_highway_mpg")
         val epaHighwayMpg: Int
+    )
+
+    @Serializable
+    data class MakeModelTrimEngine(
+        @SerialName("horsepower_hp")
+        val horsepowerHp: Int,
+        @SerialName("torque_ft_lbs")
+        val torqueFtLbs: Int
     )
 }
