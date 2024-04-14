@@ -1,4 +1,4 @@
-package com.paulklauser.cars.modeldetail
+package com.paulklauser.cars.trimdetail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -12,18 +12,18 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ModelDetailViewModel @Inject constructor(
+class TrimDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val modelDetailRepository: ModelDetailRepository
+    private val trimDetailRepository: TrimDetailRepository
 ) : ViewModel() {
 
-    private val modelId: String =
-        savedStateHandle[MODEL_ID_PATTERN]
-            ?: throw IllegalArgumentException("Make ID not provided!")
+    private val trimId: String =
+        savedStateHandle[TRIM_ID_PATTERN]
+            ?: throw IllegalArgumentException("Trim ID not provided!")
 
     private val _uiState = MutableStateFlow(
-        ModelDetailUiState(
-            modelDetail = ModelDetail(
+        TrimDetailUiState(
+            trimDetail = TrimDetail(
                 year = "2022",
                 description = "This is a car",
                 msrp = "$100,000"
@@ -32,11 +32,11 @@ class ModelDetailViewModel @Inject constructor(
     )
     val uiState = _uiState.asStateFlow()
 
-    fun fetchModelDetail() {
+    fun fetchTrimDetail() {
         viewModelScope.launch {
-            when (val response = modelDetailRepository.getTrimDetails(modelId)) {
+            when (val response = trimDetailRepository.getTrimDetails(trimId)) {
                 is ApiResponse.Success -> {
-                    _uiState.update { it.copy(modelDetail = response.data) }
+                    _uiState.update { it.copy(trimDetail = response.data) }
                 }
 
                 is ApiResponse.Error -> {

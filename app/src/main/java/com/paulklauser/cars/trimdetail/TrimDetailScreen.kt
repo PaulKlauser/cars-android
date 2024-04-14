@@ -1,4 +1,4 @@
-package com.paulklauser.cars.modeldetail
+package com.paulklauser.cars.trimdetail
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
@@ -11,31 +11,31 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.paulklauser.cars.ui.theme.CarsTheme
 
 @Composable
-fun ModelDetailRoute() {
-    val vm = hiltViewModel<ModelDetailViewModel>()
+fun TrimDetailRoute() {
+    val vm = hiltViewModel<TrimDetailViewModel>()
     val uiState by vm.uiState.collectAsState()
     LaunchedEffect(Unit) {
-        vm.fetchModelDetail()
+        vm.fetchTrimDetail()
     }
-    ModelDetailScreen(uiState = uiState)
+    TrimDetailScreen(uiState = uiState)
 }
 
 @Composable
-fun ModelDetailScreen(uiState: ModelDetailUiState) {
+fun TrimDetailScreen(uiState: TrimDetailUiState) {
     Column {
-        Text(text = uiState.modelDetail.year)
-        Text(text = uiState.modelDetail.description)
-        Text(text = uiState.modelDetail.msrp)
+        Text(text = uiState.trimDetail.year)
+        Text(text = uiState.trimDetail.description)
+        Text(text = uiState.trimDetail.msrp)
     }
 }
 
 @Preview(showSystemUi = true)
 @Composable
-private fun ModelDetailScreenPreview() {
+private fun TrimDetailScreenPreview() {
     CarsTheme {
-        ModelDetailScreen(
-            uiState = ModelDetailUiState(
-                modelDetail = ModelDetail(
+        TrimDetailScreen(
+            uiState = TrimDetailUiState(
+                trimDetail = TrimDetail(
                     year = "2022",
                     description = "This is a car",
                     msrp = "$100,000"

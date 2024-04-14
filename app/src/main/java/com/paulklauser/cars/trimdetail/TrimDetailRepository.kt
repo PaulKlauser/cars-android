@@ -1,16 +1,16 @@
-package com.paulklauser.cars.modeldetail
+package com.paulklauser.cars.trimdetail
 
 import com.paulklauser.cars.commonapi.CarService
 import com.paulklauser.cars.makes.ApiResponse
 import javax.inject.Inject
 
-class ModelDetailRepository @Inject constructor(
+class TrimDetailRepository @Inject constructor(
     private val carService: CarService
 ) {
-    suspend fun getTrimDetails(modelId: String): ApiResponse<ModelDetail> {
+    suspend fun getTrimDetails(modelId: String): ApiResponse<TrimDetail> {
         return ApiResponse.handleApiResponse {
-            ModelDetail.fromTrimResponse(
-                carService.getTrim(
+            TrimDetail.fromTrimDetailResponse(
+                carService.getTrimDetails(
                     modelId
                 )
             )

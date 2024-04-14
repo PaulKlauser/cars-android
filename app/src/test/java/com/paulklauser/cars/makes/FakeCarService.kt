@@ -1,9 +1,9 @@
 package com.paulklauser.cars.makes
 
 import com.paulklauser.cars.commonapi.CarService
-import com.paulklauser.cars.modeldetail.TrimResponse
 import com.paulklauser.cars.models.ModelTrimResponse
 import com.paulklauser.cars.models.ModelsResponse
+import com.paulklauser.cars.trimdetail.TrimDetailResponse
 
 class FakeCarService : CarService {
 
@@ -80,7 +80,7 @@ class FakeCarService : CarService {
         return _modelMap[makeId] ?: ModelsResponse(emptyList())
     }
 
-    override suspend fun getTrim(trimId: String): TrimResponse {
+    override suspend fun getTrimDetails(trimId: String): TrimDetailResponse {
         TODO("Not yet implemented")
     }
 
