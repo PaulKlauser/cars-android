@@ -3,4 +3,8 @@
     <string name="available_trims">Available Trims:</string>
     <string name="back">Back</string>
     <string name="msrp">MSRP</string>
+    <string name="fuel_economy">Fuel Economy</string>
+    <string name="highway">Highway</string>
+    <string name="city">City</string>
+    <string name="combined">Combined</string>
 </resources>

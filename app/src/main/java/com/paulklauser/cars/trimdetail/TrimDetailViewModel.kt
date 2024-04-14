@@ -21,24 +21,21 @@ class TrimDetailViewModel @Inject constructor(
         savedStateHandle[TRIM_ID_PATTERN]
             ?: throw IllegalArgumentException("Trim ID not provided!")
 
-    private val _uiState = MutableStateFlow(
-        TrimDetailUiState(
-            trimDetail = TrimDetail(
-                year = "2022",
-                make = "Toyota",
-                model = "Corolla",
-                description = "This is a car",
-                msrp = "$100,000"
-            )
-        )
-    )
+    private val _uiState =
+        MutableStateFlow(TrimDetailUiState(loadingState = TrimDetailUiState.LoadingState.Loading))
     val uiState = _uiState.asStateFlow()
 
     fun fetchTrimDetail() {
         viewModelScope.launch {
             when (val response = trimDetailRepository.getTrimDetails(trimId)) {
                 is ApiResponse.Success -> {
-                    _uiState.update { it.copy(trimDetail = response.data) }
+                    _uiState.update {
+                        it.copy(
+                            loadingState = TrimDetailUiState.LoadingState.Success(
+                                response.data
+                            )
+                        )
+                    }
                 }
 
                 is ApiResponse.Error -> {
