@@ -1,0 +1,46 @@
+name: Build & Deploy
+
+on:
+  push:
+    tags:
+      - "*.*.*"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set Up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Set version variable
+        run: |
+          VERSION_NAME=$(echo "${{ github.ref_name }}" | egrep -o '[0-9]+\.[0-9]+\.[0-9]+')
+          echo "version_name=$VERSION_NAME" >> "$GITHUB_ENV"
+
+      - name: Decode Keystore
+        env:
+          ENCODED_KEYSTORE: ${{ secrets.ENCODED_KEYSTORE }}
+        run: echo $ENCODED_KEYSTORE | base64 -d > keystore
+
+      - name: 'Build release'
+        env:
+          VERSION_CODE: ${{ github.run_number }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: ./gradlew assembleRelease
+
+      - uses: marvinpinto/action-automatic-releases@v1.2.1
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          prerelease: false
+          files: |
+            app/build/outputs/apk/release/app-release.apk

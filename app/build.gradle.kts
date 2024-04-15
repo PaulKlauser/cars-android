@@ -17,8 +17,8 @@ android {
         applicationId = "com.paulklauser.cars"
         minSdk = 23
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = Integer.valueOf(System.getenv("VERSION_CODE")?.toInt() ?: 1)
+        versionName = System.getenv("VERSION_NAME") ?: "1.0.0"
 
         testInstrumentationRunner = "com.paulklauser.cars.CarsTestRunner"
         vectorDrawables {
