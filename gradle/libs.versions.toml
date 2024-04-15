@@ -12,9 +12,8 @@ detekt = "1.23.3"
 compose-lint-checks = "1.2.0"
 timber = "5.0.1"
 okhttp-bom = "4.12.0"
-retrofit = "2.9.0"
+retrofit = "2.11.0"
 kotlinx-serialization = "1.6.0"
-retrofit2-kotlinx-serialization-converter = "1.0.0"
 hilt = "2.49"
 kotlinx-coroutines = "1.7.3"
 assertk = "0.28.0"
@@ -48,7 +47,7 @@ okhttp = { group = "com.squareup.okhttp3", name = "okhttp" }
 okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
-retrofit2-kotlinx-serialization-converter = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofit2-kotlinx-serialization-converter" }
+retrofit2-kotlinx-serialization-converter = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
