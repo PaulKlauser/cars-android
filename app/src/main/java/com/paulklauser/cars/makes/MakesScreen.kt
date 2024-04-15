@@ -19,10 +19,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.paulklauser.cars.Error
 import com.paulklauser.cars.Loading
+import com.paulklauser.cars.R
 import com.paulklauser.cars.commonapi.Year
 import com.paulklauser.cars.ui.theme.CarsTheme
 import kotlinx.collections.immutable.ImmutableList
@@ -54,7 +56,7 @@ fun MakesScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Choose a make") },
+                title = { Text(text = stringResource(R.string.choose_a_make)) },
                 actions = {
                     YearSelection(
                         selectedYear = uiState.selectedYear,

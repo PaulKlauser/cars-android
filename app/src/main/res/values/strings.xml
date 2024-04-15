@@ -12,4 +12,5 @@
     <string name="hp">"%1$s hp"</string>
     <string name="torque">Torque</string>
     <string name="lb_ft">"%1$s lb-ft"</string>
+    <string name="choose_a_make">Choose a make</string>
 </resources>
