@@ -29,7 +29,7 @@ class TrimDetailViewModelTest {
         carService._shouldErrorOnTrimDetails = true
         val viewModel = createViewModel()
 
-        viewModel.fetchTrimDetail()
+        viewModel.fetchTrimDetailIfNecessary()
 
         viewModel.uiState.test {
             assertThat(awaitItem()).isEqualTo(

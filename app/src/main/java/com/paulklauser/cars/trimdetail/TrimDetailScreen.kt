@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Card
@@ -41,12 +43,12 @@ fun TrimDetailRoute(onNavigateBack: () -> Unit) {
     val vm = hiltViewModel<TrimDetailViewModel>()
     val uiState by vm.uiState.collectAsState()
     LaunchedEffect(Unit) {
-        vm.fetchTrimDetail()
+        vm.fetchTrimDetailIfNecessary()
     }
     TrimDetailScreen(
         uiState = uiState,
         onNavigateBack = onNavigateBack,
-        onRetry = vm::fetchTrimDetail
+        onRetry = vm::fetchTrimDetailIfNecessary
     )
 }
 
@@ -92,7 +94,8 @@ fun TrimDetailScreen(
 
 @Composable
 private fun Loaded(trimDetail: TrimDetail) {
-    Column {
+    val scrollState = rememberScrollState()
+    Column(modifier = Modifier.verticalScroll(scrollState)) {
         Text(
             text = trimDetail.description,
             style = MaterialTheme.typography.titleMedium,

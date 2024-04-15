@@ -25,7 +25,10 @@ class TrimDetailViewModel @Inject constructor(
         MutableStateFlow(TrimDetailUiState(loadingState = TrimDetailUiState.LoadingState.Loading))
     val uiState = _uiState.asStateFlow()
 
-    fun fetchTrimDetail() {
+    fun fetchTrimDetailIfNecessary() {
+        if (_uiState.value.loadingState is TrimDetailUiState.LoadingState.Success) {
+            return
+        }
         viewModelScope.launch {
             _uiState.update { it.copy(loadingState = TrimDetailUiState.LoadingState.Loading) }
             when (val response = trimDetailRepository.getTrimDetails(trimId)) {
