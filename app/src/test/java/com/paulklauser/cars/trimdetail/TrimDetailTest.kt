@@ -50,4 +50,15 @@ class TrimDetailTest {
 
         assertThat(trimDetail).prop(TrimDetail::fuelEconomy).isEqualTo(null)
     }
+
+    @Test
+    fun `currency formatted correctly`() {
+        val trimDetailResponse = createTrimDetailResponse(
+            msrpDollars = 20000
+        )
+
+        val trimDetail = TrimDetail.fromTrimDetailResponse(trimDetailResponse)
+
+        assertThat(trimDetail.msrp).isEqualTo("$20,000")
+    }
 }

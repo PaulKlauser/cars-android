@@ -31,7 +31,7 @@ class TrimDetailTest {
         composeRule.onNodeWithText("Ford").performClick()
         composeRule.onNodeWithText("F-150").performClick()
         composeRule.onNodeWithText("LE").performClick()
-        composeRule.onNodeWithText("$20000").assertExists()
+        composeRule.onNodeWithText("$20,000").assertExists()
     }
 
 }

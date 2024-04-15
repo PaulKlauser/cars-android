@@ -1,5 +1,8 @@
 package com.paulklauser.cars.trimdetail
 
+import java.text.NumberFormat
+import java.util.Locale
+
 data class TrimDetail(
     val year: String,
     val make: String,
@@ -17,11 +20,17 @@ data class TrimDetail(
                 make = trimDetailResponse.makeModel.make.name,
                 model = trimDetailResponse.makeModel.name,
                 description = trimDetailResponse.description,
-                msrp = "$${trimDetailResponse.msrpDollars}",
+                msrp = formatMsrp(trimDetailResponse.msrpDollars),
                 fuelEconomy = resolveFuelEconomy(trimDetailResponse),
                 horsepower = "${trimDetailResponse.makeModelTrimEngine.horsepowerHp}",
                 torque = "${trimDetailResponse.makeModelTrimEngine.torqueFtLbs}"
             )
+        }
+
+        private fun formatMsrp(msrpDollars: Int): String {
+            return NumberFormat.getCurrencyInstance(Locale.US).apply {
+                maximumFractionDigits = 0
+            }.format(msrpDollars)
         }
 
         private fun resolveFuelEconomy(trimDetailResponse: TrimDetailResponse): FuelEconomy? {
