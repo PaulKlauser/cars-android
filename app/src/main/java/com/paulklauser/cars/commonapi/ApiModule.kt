@@ -34,9 +34,4 @@ object ApiModule {
             .baseUrl("https://carapi.app/")
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
-
-    @Provides
-    fun makesService(retrofit: Retrofit): CarService {
-        return retrofit.create(CarService::class.java)
-    }
 }

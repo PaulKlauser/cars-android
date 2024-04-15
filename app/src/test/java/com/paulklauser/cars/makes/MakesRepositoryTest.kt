@@ -4,6 +4,7 @@ import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
+import com.paulklauser.cars.commonapi.FakeCarService
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 

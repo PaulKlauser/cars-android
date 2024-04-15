@@ -1,10 +1,14 @@
-package com.paulklauser.cars.makes
+package com.paulklauser.cars.commonapi
 
-import com.paulklauser.cars.commonapi.CarService
+import com.paulklauser.cars.makes.ApiMake
+import com.paulklauser.cars.makes.MakesResponse
 import com.paulklauser.cars.models.ModelTrimResponse
 import com.paulklauser.cars.models.ModelsResponse
 import com.paulklauser.cars.trimdetail.TrimDetailResponse
 
+/**
+ * Duplicated between test and androidTest in lieu of setting up a shared basetest module right now.
+ */
 @Suppress("TooGenericExceptionThrown")
 class FakeCarService : CarService {
 

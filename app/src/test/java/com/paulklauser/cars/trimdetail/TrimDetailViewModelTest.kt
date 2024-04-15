@@ -5,7 +5,7 @@ import app.cash.turbine.test
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.paulklauser.cars.MainDispatcherRule
-import com.paulklauser.cars.makes.FakeCarService
+import com.paulklauser.cars.commonapi.FakeCarService
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test

@@ -5,9 +5,9 @@ import app.cash.turbine.test
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.paulklauser.cars.MainDispatcherRule
+import com.paulklauser.cars.commonapi.FakeCarService
 import com.paulklauser.cars.commonapi.MakeAndModelRepository
 import com.paulklauser.cars.makes.ApiMake
-import com.paulklauser.cars.makes.FakeCarService
 import com.paulklauser.cars.makes.MakesResponse
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.test.runTest
