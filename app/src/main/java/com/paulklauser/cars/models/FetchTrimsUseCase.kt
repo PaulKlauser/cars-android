@@ -31,6 +31,8 @@ class FetchTrimsUseCase @Inject constructor(
                 ApiResponse.Success(
                     modelToTrimResponses.mapValues {
                         (it.value as ApiResponse.Success).data
+                    }.filterValues {
+                        it.isNotEmpty()
                     }
                 )
             }

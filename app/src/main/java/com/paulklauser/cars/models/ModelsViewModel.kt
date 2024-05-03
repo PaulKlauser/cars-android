@@ -60,10 +60,10 @@ class ModelsViewModel @Inject constructor(
 
             is ApiResponse.Success -> modelToTrimsResponse.data
         }
-        val modelItems = models.map {
+        val modelItems = modelToTrims.map {
             ModelRowItem(
-                model = it,
-                trims = modelToTrims[it]!!
+                model = it.key,
+                trims = it.value
             )
         }.toPersistentList()
         return ModelsUiState(

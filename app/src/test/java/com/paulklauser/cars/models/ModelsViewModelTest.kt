@@ -136,6 +136,79 @@ class ModelsViewModelTest {
     }
 
     @Test
+    fun `models with no trims returned are filtered out`() = runTest {
+        carService._makesResponse = MakesResponse(
+            data = listOf(
+                ApiMake(
+                    id = 1,
+                    name = "Ford"
+                ),
+            )
+        )
+        carService._modelMap = mapOf(
+            "1" to ModelsResponse(
+                listOf(
+                    ModelsResponse.ApiModel(
+                        id = 1,
+                        name = "F-150",
+                        makeId = 1
+                    ),
+                    ModelsResponse.ApiModel(
+                        id = 2,
+                        name = "Mustang",
+                        makeId = 1
+                    )
+                )
+            )
+        )
+        carService._trimsMap = mapOf(
+            "1" to ModelTrimResponse(
+                listOf(
+                    ModelTrimResponse.ModelTrim(
+                        id = 1,
+                        description = "XL"
+                    ),
+                    ModelTrimResponse.ModelTrim(
+                        id = 2,
+                        description = "XLT"
+                    )
+                )
+            )
+        )
+        val viewModel = createViewModel()
+        viewModel.fetchIfNeeded()
+
+        viewModel.uiState.test {
+            assertThat(awaitItem()).isEqualTo(
+                ModelsUiState(
+                    loadingState = ModelsUiState.LoadingState.Success(
+                        models = persistentListOf(
+                            ModelRowItem(
+                                model = Model(
+                                    id = "1",
+                                    name = "F-150",
+                                    makeId = "1"
+                                ),
+                                trims = listOf(
+                                    Trim(
+                                        id = "1",
+                                        description = "XL"
+                                    ),
+                                    Trim(
+                                        id = "2",
+                                        description = "XLT"
+                                    )
+                                )
+                            )
+                        )
+                    ),
+                    make = "Ford"
+                )
+            )
+        }
+    }
+
+    @Test
     fun `failure to fetch models gives error state`() = runTest {
         carService._shouldErrorOnModels = true
         val viewModel = createViewModel()
