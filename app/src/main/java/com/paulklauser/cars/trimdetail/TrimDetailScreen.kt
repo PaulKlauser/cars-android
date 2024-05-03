@@ -120,31 +120,40 @@ private fun Loaded(trimDetail: TrimDetail) {
                 modifier = Modifier.fillMaxWidth()
             )
         }
-        DetailCard(title = stringResource(R.string.engine), modifier = Modifier.fillMaxWidth()) {
-            val horsePower = buildAnnotatedString {
-                withStyle(MaterialTheme.typography.titleMedium.toSpanStyle()) {
-                    append(stringResource(R.string.power))
-                }
-                withStyle(MaterialTheme.typography.bodyLarge.toSpanStyle()) {
-                    append(" ")
-                    append(stringResource(R.string.hp, trimDetail.horsepower))
-                }
-            }
-            val torque = trimDetail.torque?.let {
-                buildAnnotatedString {
-                    withStyle(MaterialTheme.typography.titleMedium.toSpanStyle()) {
-                        append(stringResource(R.string.torque))
-                    }
-                    withStyle(MaterialTheme.typography.bodyLarge.toSpanStyle()) {
-                        append(" ")
-                        append(stringResource(R.string.lb_ft, it))
+        if (trimDetail.horsepower != null || trimDetail.torque != null) {
+            DetailCard(
+                title = stringResource(R.string.engine),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                val horsePower = trimDetail.horsepower?.let {
+                    buildAnnotatedString {
+                        withStyle(MaterialTheme.typography.titleMedium.toSpanStyle()) {
+                            append(stringResource(R.string.power))
+                        }
+                        withStyle(MaterialTheme.typography.bodyLarge.toSpanStyle()) {
+                            append(" ")
+                            append(stringResource(R.string.hp, trimDetail.horsepower))
+                        }
                     }
                 }
-            }
-            Column {
-                Text(text = horsePower)
-                torque?.let {
-                    Text(text = it)
+                val torque = trimDetail.torque?.let {
+                    buildAnnotatedString {
+                        withStyle(MaterialTheme.typography.titleMedium.toSpanStyle()) {
+                            append(stringResource(R.string.torque))
+                        }
+                        withStyle(MaterialTheme.typography.bodyLarge.toSpanStyle()) {
+                            append(" ")
+                            append(stringResource(R.string.lb_ft, it))
+                        }
+                    }
+                }
+                Column {
+                    horsePower?.let {
+                        Text(text = it)
+                    }
+                    torque?.let {
+                        Text(text = it)
+                    }
                 }
             }
         }

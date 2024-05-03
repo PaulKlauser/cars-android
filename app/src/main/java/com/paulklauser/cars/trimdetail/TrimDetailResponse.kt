@@ -37,7 +37,7 @@ data class TrimDetailResponse(
     @Serializable
     data class MakeModelTrimEngine(
         @SerialName("horsepower_hp")
-        val horsepowerHp: Int,
+        val horsepowerHp: Int?,
         @SerialName("torque_ft_lbs")
         val torqueFtLbs: Int?
     )
