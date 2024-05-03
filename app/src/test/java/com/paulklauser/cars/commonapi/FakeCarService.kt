@@ -5,6 +5,8 @@ import com.paulklauser.cars.makes.MakesResponse
 import com.paulklauser.cars.models.ModelTrimResponse
 import com.paulklauser.cars.models.ModelsResponse
 import com.paulklauser.cars.trimdetail.TrimDetailResponse
+import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * Duplicated between test and androidTest in lieu of setting up a shared basetest module right now.
@@ -12,6 +14,7 @@ import com.paulklauser.cars.trimdetail.TrimDetailResponse
 @Suppress("TooGenericExceptionThrown")
 class FakeCarService : CarService {
 
+    var _makesDelay = 0.milliseconds
     var _makesResponse = MakesResponse(
         data = listOf(
             ApiMake(
@@ -28,6 +31,8 @@ class FakeCarService : CarService {
             ),
         )
     )
+    var _makesCallCount = 0
+        private set
     var _modelMap = mapOf(
         "1" to ModelsResponse(
             listOf(
@@ -81,6 +86,8 @@ class FakeCarService : CarService {
     var _shouldErrorOnTrimDetails = false
 
     override suspend fun getMakes(): MakesResponse {
+        _makesCallCount++
+        delay(_makesDelay)
         return _makesResponse
     }
 

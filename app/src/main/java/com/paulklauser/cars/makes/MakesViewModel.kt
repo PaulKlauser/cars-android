@@ -43,7 +43,9 @@ class MakesViewModel @Inject constructor(
     private var fetchJob: Job? = null
 
     fun fetchMakes() {
-        fetchJob?.cancel()
+        if (fetchJob?.isActive == true) {
+            return
+        }
         fetchJob = viewModelScope.launch {
             makeAndModelRepository.fetchCarInfoIfNeeded()
         }
