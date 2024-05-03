@@ -22,8 +22,7 @@ class ModelsViewModel @Inject constructor(
     private val fetchTrimsUseCase: FetchTrimsUseCase
 ) : ViewModel() {
 
-    private val makeId: String =
-        savedStateHandle[MAKE_ID_PATTERN] ?: throw IllegalArgumentException("Make ID not provided!")
+    private val makeId = ModelsArgs(savedStateHandle).makeId
     val uiState = makeAndModelRepository.state.map { makeAndModelState ->
         when (makeAndModelState.loadingState) {
             MakeAndModelRepositoryState.LoadingState.Error -> ModelsUiState(

@@ -17,9 +17,7 @@ class TrimDetailViewModel @Inject constructor(
     private val trimDetailRepository: TrimDetailRepository
 ) : ViewModel() {
 
-    private val trimId: String =
-        savedStateHandle[TRIM_ID_PATTERN]
-            ?: throw IllegalArgumentException("Trim ID not provided!")
+    private val trimId = TrimDetailArgs(savedStateHandle).trimId
 
     private val _uiState =
         MutableStateFlow(TrimDetailUiState(loadingState = TrimDetailUiState.LoadingState.Loading))

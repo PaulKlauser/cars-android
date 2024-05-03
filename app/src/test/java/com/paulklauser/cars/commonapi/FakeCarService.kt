@@ -68,8 +68,7 @@ class FakeCarService : CarService {
             listOf(
                 ModelTrimResponse.ModelTrim(
                     id = 1,
-                    description = "LE",
-                    makeModelId = 1
+                    description = "LE"
                 ),
             )
         ),
@@ -77,8 +76,7 @@ class FakeCarService : CarService {
             listOf(
                 ModelTrimResponse.ModelTrim(
                     id = 2,
-                    description = "SE",
-                    makeModelId = 1
+                    description = "SE"
                 ),
             )
         )
