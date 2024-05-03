@@ -5,23 +5,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.paulklauser.cars.commonapi.MakeAndModelRepository
 import com.paulklauser.cars.commonapi.MakeAndModelRepositoryState
+import com.paulklauser.cars.makes.ApiResponse
 import com.paulklauser.cars.makes.Make
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toPersistentList
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class ModelsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val makeAndModelRepository: MakeAndModelRepository,
-    private val trimsRepository: TrimsRepository
+    private val fetchTrimsUseCase: FetchTrimsUseCase
 ) : ViewModel() {
 
     private val makeId: String =
@@ -55,14 +53,13 @@ class ModelsViewModel @Inject constructor(
         val models = requireNotNull(makesToModels[make]) {
             "Make ID not found in map of makes to models!"
         }
-        val modelToTrims = try {
-            fetchTrimsForModels(models)
-        } catch (e: Exception) {
-            Timber.e(e)
-            return ModelsUiState(
+        val modelToTrims = when (val modelToTrimsResponse = fetchTrimsUseCase(models)) {
+            ApiResponse.Error -> return ModelsUiState(
                 loadingState = ModelsUiState.LoadingState.Error,
                 make = ""
             )
+
+            is ApiResponse.Success -> modelToTrimsResponse.data
         }
         val modelItems = models.map {
             ModelRowItem(
@@ -76,22 +73,6 @@ class ModelsViewModel @Inject constructor(
             ),
             make = make.name
         )
-    }
-
-    private suspend fun fetchTrimsForModels(models: List<Model>): Map<Model, List<Trim>> {
-        return coroutineScope {
-            val trimRequests = models.associateWith {
-                async {
-                    // TODO: PK - I don't love grabbing the year from the other repo like this.
-                    //  Smells like a use case might be warranted.
-                    trimsRepository.getTrims(
-                        makeModelId = it.id,
-                        year = makeAndModelRepository.state.value.selectedYear.value
-                    )
-                }
-            }
-            trimRequests.mapValues { it.value.await() }
-        }
     }
 
     fun fetchIfNeeded() {

@@ -20,12 +20,16 @@ class ModelsViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val carService = FakeCarService()
+    private val makeAndModelRepository = MakeAndModelRepository(carService)
 
     private fun createViewModel(): ModelsViewModel {
         return ModelsViewModel(
             savedStateHandle = SavedStateHandle(mapOf(MAKE_ID_PATTERN to "1")),
-            makeAndModelRepository = MakeAndModelRepository(carService),
-            trimsRepository = TrimsRepository(carService)
+            makeAndModelRepository = makeAndModelRepository,
+            fetchTrimsUseCase = FetchTrimsUseCase(
+                trimsRepository = TrimsRepository(carService),
+                makeAndModelRepository = makeAndModelRepository
+            )
         )
     }
 
