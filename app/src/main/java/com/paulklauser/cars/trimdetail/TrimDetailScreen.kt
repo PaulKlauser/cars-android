@@ -130,18 +130,22 @@ private fun Loaded(trimDetail: TrimDetail) {
                     append(stringResource(R.string.hp, trimDetail.horsepower))
                 }
             }
-            val torque = buildAnnotatedString {
-                withStyle(MaterialTheme.typography.titleMedium.toSpanStyle()) {
-                    append(stringResource(R.string.torque))
-                }
-                withStyle(MaterialTheme.typography.bodyLarge.toSpanStyle()) {
-                    append(" ")
-                    append(stringResource(R.string.lb_ft, trimDetail.torque))
+            val torque = trimDetail.torque?.let {
+                buildAnnotatedString {
+                    withStyle(MaterialTheme.typography.titleMedium.toSpanStyle()) {
+                        append(stringResource(R.string.torque))
+                    }
+                    withStyle(MaterialTheme.typography.bodyLarge.toSpanStyle()) {
+                        append(" ")
+                        append(stringResource(R.string.lb_ft, it))
+                    }
                 }
             }
             Column {
                 Text(text = horsePower)
-                Text(text = torque)
+                torque?.let {
+                    Text(text = it)
+                }
             }
         }
     }

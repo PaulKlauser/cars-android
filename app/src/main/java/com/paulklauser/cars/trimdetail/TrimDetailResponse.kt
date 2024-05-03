@@ -39,6 +39,6 @@ data class TrimDetailResponse(
         @SerialName("horsepower_hp")
         val horsepowerHp: Int,
         @SerialName("torque_ft_lbs")
-        val torqueFtLbs: Int
+        val torqueFtLbs: Int?
     )
 }

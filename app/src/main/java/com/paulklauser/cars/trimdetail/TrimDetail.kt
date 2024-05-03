@@ -11,7 +11,7 @@ data class TrimDetail(
     val msrp: String,
     val fuelEconomy: FuelEconomy?,
     val horsepower: String,
-    val torque: String
+    val torque: String?
 ) {
     companion object {
         fun fromTrimDetailResponse(trimDetailResponse: TrimDetailResponse): TrimDetail {
@@ -23,7 +23,7 @@ data class TrimDetail(
                 msrp = formatMsrp(trimDetailResponse.msrpDollars),
                 fuelEconomy = resolveFuelEconomy(trimDetailResponse),
                 horsepower = "${trimDetailResponse.makeModelTrimEngine.horsepowerHp}",
-                torque = "${trimDetailResponse.makeModelTrimEngine.torqueFtLbs}"
+                torque = trimDetailResponse.makeModelTrimEngine.torqueFtLbs?.toString()
             )
         }
 

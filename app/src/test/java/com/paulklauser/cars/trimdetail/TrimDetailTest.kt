@@ -61,4 +61,18 @@ class TrimDetailTest {
 
         assertThat(trimDetail.msrp).isEqualTo("$20,000")
     }
+
+    @Test
+    fun `null torque response propagated`() {
+        val trimDetailResponse = createTrimDetailResponse(
+            makeModelTrimEngine = TrimDetailResponse.MakeModelTrimEngine(
+                horsepowerHp = 200,
+                torqueFtLbs = null
+            )
+        )
+
+        val trimDetail = TrimDetail.fromTrimDetailResponse(trimDetailResponse)
+
+        assertThat(trimDetail.torque).isEqualTo(null)
+    }
 }
