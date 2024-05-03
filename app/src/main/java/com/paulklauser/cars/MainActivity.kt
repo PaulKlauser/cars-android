@@ -9,9 +9,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.paulklauser.cars.makes.MAKES_ROUTE
 import com.paulklauser.cars.makes.makes
-import com.paulklauser.cars.models.MODELS_ROUTE_PATTERN
 import com.paulklauser.cars.models.models
-import com.paulklauser.cars.trimdetail.TRIM_DETAIL_ROUTE_PATTERN
+import com.paulklauser.cars.models.navigateToModel
+import com.paulklauser.cars.trimdetail.navigateToTrimDetail
 import com.paulklauser.cars.trimdetail.trimDetail
 import com.paulklauser.cars.ui.theme.CarsTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,13 +31,13 @@ class MainActivity : ComponentActivity() {
                     ) {
                         makes(
                             onMakeSelected = { makeId ->
-                                navController.navigate("$MODELS_ROUTE_PATTERN/$makeId")
+                                navController.navigateToModel(makeId)
                             }
                         )
                         models(
                             onNavigateBack = { navController.popBackStack() },
                             onTrimSelected = { trimId ->
-                                navController.navigate("$TRIM_DETAIL_ROUTE_PATTERN/$trimId")
+                                navController.navigateToTrimDetail(trimId)
                             }
                         )
                         trimDetail(onNavigateBack = { navController.popBackStack() })
