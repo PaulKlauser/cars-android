@@ -57,7 +57,7 @@ class MakeAndModelRepository @Inject constructor(
     private suspend fun fetchCarInfo(): Map<Make, List<Model>> {
         val makes = carService.getMakes().data.map { Make.fromApi(it) }
         return coroutineScope {
-            val foo = makes.map {
+            makes.map {
                 async {
                     carService.getModels(
                         makeId = it.id,
@@ -65,7 +65,7 @@ class MakeAndModelRepository @Inject constructor(
                     ).data.map { Model.fromApiModel(it) }
                 }
             }
-            foo.awaitAll()
+                .awaitAll()
                 .filter { it.isNotEmpty() }
                 .associateBy { models ->
                     makes.first {
