@@ -54,6 +54,11 @@ class MakeAndModelRepository @Inject constructor(
         }
     }
 
+    /**
+     * Fetch each make available in the API, and then fetch all models for each make.
+     *
+     * Doing this up front allows us to filter out makes that have no models.
+     */
     private suspend fun fetchCarInfo(): Map<Make, List<Model>> {
         val makes = carService.getMakes().data.map { Make.fromApi(it) }
         return coroutineScope {

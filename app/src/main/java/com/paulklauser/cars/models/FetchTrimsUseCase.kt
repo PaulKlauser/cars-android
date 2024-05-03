@@ -20,6 +20,8 @@ class FetchTrimsUseCase @Inject constructor(
                     )
                 }
             }
+            // This technically won't actually make all trim requests in parallel, but the complexity
+            // of doing so and associating the trims back to the models isn't worth it right now.
             val modelToTrimResponses = trimRequests.mapValues {
                 it.value.await()
             }
