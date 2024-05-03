@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
@@ -24,12 +25,12 @@ fun Error(onRetry: () -> Unit, modifier: Modifier = Modifier) {
             modifier = Modifier.padding(16.dp)
         ) {
             Text(
-                text = "There was an issue fetching that, please try again.",
+                text = stringResource(R.string.there_was_an_issue_fetching_that_please_try_again),
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(16.dp))
             Button(onClick = onRetry) {
-                Text(text = "Retry")
+                Text(text = stringResource(R.string.retry))
             }
         }
     }

@@ -13,4 +13,6 @@
     <string name="torque">Torque</string>
     <string name="lb_ft">"%1$s lb-ft"</string>
     <string name="choose_a_make">Choose a make</string>
+    <string name="there_was_an_issue_fetching_that_please_try_again">There was an issue fetching that, please try again.</string>
+    <string name="retry">Retry</string>
 </resources>
