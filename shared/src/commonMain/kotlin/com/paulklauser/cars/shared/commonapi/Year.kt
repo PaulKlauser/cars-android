@@ -1,4 +1,4 @@
-package com.paulklauser.cars.commonapi
+package com.paulklauser.cars.shared.commonapi
 
 /**
  * The free tier of carapi.app only supports years 2015-2020.

@@ -12,7 +12,6 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
@@ -21,4 +20,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Cars!"
 include(":app")
- 
+include(":shared")

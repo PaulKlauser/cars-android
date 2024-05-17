@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.paulklauser.cars.commonapi.MakeAndModelRepository
 import com.paulklauser.cars.commonapi.MakeAndModelRepositoryState
-import com.paulklauser.cars.commonapi.Year
+import com.paulklauser.cars.shared.commonapi.Year
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Job

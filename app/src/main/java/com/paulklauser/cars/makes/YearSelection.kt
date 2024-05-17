@@ -10,7 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.paulklauser.cars.commonapi.Year
+import com.paulklauser.cars.shared.commonapi.Year
 
 @Composable
 fun YearSelection(

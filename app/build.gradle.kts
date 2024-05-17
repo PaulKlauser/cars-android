@@ -95,6 +95,7 @@ android {
 
 dependencies {
 
+    implementation(project(":shared"))
     lintChecks(libs.compose.lint.checks)
     implementation(libs.detekt)
     detektPlugins(libs.detekt.formatting)

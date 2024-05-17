@@ -25,7 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.paulklauser.cars.Error
 import com.paulklauser.cars.Loading
 import com.paulklauser.cars.R
-import com.paulklauser.cars.commonapi.Year
+import com.paulklauser.cars.shared.commonapi.Year
 import com.paulklauser.cars.ui.theme.CarsTheme
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf

@@ -1,6 +1,6 @@
 package com.paulklauser.cars.makes
 
-import com.paulklauser.cars.commonapi.Year
+import com.paulklauser.cars.shared.commonapi.Year
 import kotlinx.collections.immutable.ImmutableList
 
 data class MakesUiState(

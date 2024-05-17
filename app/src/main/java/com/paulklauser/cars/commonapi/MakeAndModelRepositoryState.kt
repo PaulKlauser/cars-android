@@ -2,6 +2,7 @@ package com.paulklauser.cars.commonapi
 
 import com.paulklauser.cars.makes.Make
 import com.paulklauser.cars.models.Model
+import com.paulklauser.cars.shared.commonapi.Year
 
 data class MakeAndModelRepositoryState(
     val loadingState: LoadingState,
